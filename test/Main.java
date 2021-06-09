@@ -5,7 +5,7 @@ public class Main {
 
   //demo main
   public static void main(String[] args) {
-    String path = "/Users/keenanv/Documents/NEU/CS3500/Projects/Image Processor/src/";
+    String path = "/Users/keenanv/Documents/NEU/CS3500/Projects/Image Processor/res/";
     String readKoala = "Koala.ppm";
     String writeKoala = "test.ppm";
     String writeCheckers = "checkers.ppm";
