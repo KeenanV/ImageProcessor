@@ -20,30 +20,43 @@ public class Filter implements ImageCommand {
         {-0.125, -0.125, -0.125, -0.125, -0.125}}),
     ;
 
-    private final double[][] filter;
+    private final double[][] matrix;
 
-    FilterMatrix(double[][] filter) {
-      this.filter = filter;
+    FilterMatrix(double[][] matrix) {
+      this.matrix = matrix;
+    }
+
+    public double[][] getMatrix() {
+      return this.matrix;
     }
 
     public int height() {
-      return filter.length;
+      return matrix.length;
     }
 
     public int width() {
-      return filter[0].length;
+      return matrix[0].length;
     }
   }
 
-  FilterMatrix matrix;
+  double[][] matrix;
 
   /**
-   * Creates a new filter command with the given matrix
+   * Creates a new filter command with the given matrix.
+   *
+   * @param matrix the matrix, represented by a 2D array of doubles
+   */
+  public Filter(double[][] matrix) {
+    this.matrix = matrix;
+  }
+
+  /**
+   * Creates a new filter command with the given FilterMatrix.
    *
    * @param matrix the filter matrix
    */
   public Filter(FilterMatrix matrix) {
-    this.matrix = matrix;
+    this(matrix.getMatrix());
   }
 
   @Override

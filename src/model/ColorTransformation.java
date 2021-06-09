@@ -21,6 +21,10 @@ public class ColorTransformation implements ImageCommand {
       this.matrix = matrix;
     }
 
+    public double[][] getMatrix() {
+      return this.matrix;
+    }
+
     public int height() {
       return matrix.length;
     }
@@ -30,7 +34,7 @@ public class ColorTransformation implements ImageCommand {
     }
   }
 
-  ColorTransformationMatrix matrix;
+  double[][] matrix;
 
   /**
    * Creates a new color transformation command with the given 3x3 matrix.
@@ -38,11 +42,20 @@ public class ColorTransformation implements ImageCommand {
    * @param matrix the color transformation matrix
    * @throws IllegalArgumentException if the given matrix is not 3x3
    */
-  public ColorTransformation(ColorTransformationMatrix matrix) {
-    if (matrix.height() != 3 || matrix.width() != 3) {
+  public ColorTransformation(double[][] matrix) {
+    if (matrix.length != 3 || matrix[0].length != 3) {
       throw new IllegalArgumentException("Invalid color transformation matrix");
     }
     this.matrix = matrix;
+  }
+
+  /**
+   * Calls the constructor for a double[][] using the given ColorTransformationMatrix.
+   *
+   * @param matrix the ColorTransformationMatrix
+   */
+  public ColorTransformation(ColorTransformationMatrix matrix) {
+    this(matrix.getMatrix());
   }
 
   @Override
