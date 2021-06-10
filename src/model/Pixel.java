@@ -13,7 +13,7 @@ public class Pixel {
    * The three channels of the pixel's color.
    */
   public enum PixelChannel {
-    RED, GREEN, BLUE;
+    RED, GREEN, BLUE
   }
 
   /**
@@ -22,10 +22,10 @@ public class Pixel {
    * @param red   the pixel's red channel value
    * @param green the pixel's green channel value
    * @param blue  the pixel's blue channel value
-   * @throws IllegalArgumentException if any given channel value is invalid (below 0 or above 255)
+   * @throws IllegalArgumentException if any given channel value is below 0 or above 255
    */
   public Pixel(int red, int green, int blue) {
-    if (!validChannelValue(red) || !validChannelValue(green) || !validChannelValue(blue)) {
+    if (invalidChannelValue(red) || invalidChannelValue(green) || invalidChannelValue(blue)) {
       throw new IllegalArgumentException("Invalid channel value");
     }
     this.red = red;
@@ -39,7 +39,7 @@ public class Pixel {
    * @param value the value to check
    * @return Whether the value is a valid channel value
    */
-  private boolean validChannelValue(int value) {
+  private boolean invalidChannelValue(int value) {
     return value >= 0 && value <= 255;
   }
 
@@ -58,32 +58,6 @@ public class Pixel {
         return green;
       case BLUE:
         return blue;
-      default:
-        throw new IllegalArgumentException();
-    }
-  }
-
-  /**
-   * Sets the value of an indicated channel to a new int value.
-   *
-   * @param channel the channel whose value is being replaced
-   * @param value   the value to assign to the indicated channel
-   * @throws IllegalArgumentException if the given PixelChannel or value are invalid
-   */
-  public void setChannel(PixelChannel channel, int value) {
-    if (!validChannelValue(value)) {
-      throw new IllegalArgumentException("Invalid channel value");
-    }
-    switch (channel) {
-      case RED:
-        red = value;
-        break;
-      case GREEN:
-        green = value;
-        break;
-      case BLUE:
-        blue = value;
-        break;
       default:
         throw new IllegalArgumentException();
     }

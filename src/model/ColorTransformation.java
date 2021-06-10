@@ -1,10 +1,15 @@
 package model;
 
+import model.Pixel.PixelChannel;
+
 /**
  * Applies the given matrix to the channels of each pixel in a given image.
  */
 public class ColorTransformation implements ImageCommand {
 
+  /**
+   * Represents a premade matrix for a certain color transformation.
+   */
   public enum ColorTransformationMatrix {
     GRAYSCALE(new double[][]{
         {0.2126, 0.7152, 0.0722},
@@ -43,7 +48,7 @@ public class ColorTransformation implements ImageCommand {
    * @throws IllegalArgumentException if the given matrix is not 3x3
    */
   public ColorTransformation(double[][] matrix) {
-    if (matrix.length != 3 || matrix[0].length != 3) {
+    if (matrix == null || matrix.length != 3 || matrix[0].length != 3) {
       throw new IllegalArgumentException("Invalid color transformation matrix");
     }
     this.matrix = matrix;
@@ -60,6 +65,43 @@ public class ColorTransformation implements ImageCommand {
 
   @Override
   public Image go(Image image) {
-    return image;
+    if (image == null) {
+      throw new IllegalArgumentException();
+    }
+
+    Image newImage = new Image(image.getWidth(), image.getHeight());
+    for (int x = 0; x < image.getWidth(); x += 1) {
+      for (int y = 0; y < image.getHeight(); y += 1) {
+        newImage.setPixel(x, y, applyToPixel(image.getPixel(x, y)));
+      }
+    }
+    return newImage;
+  }
+
+  /**
+   * Modifies a given pixel according to this object's matrix.
+   * @param pixel the pixel to be modified
+   * @return the modified pixel
+   * @throws IllegalArgumentException if the given pixel is null
+   */
+  private Pixel applyToPixel(Pixel pixel) {
+    if (pixel == null) {
+      throw new IllegalArgumentException();
+    }
+
+    int oldRed = pixel.getChannel(PixelChannel.RED);
+    int oldGreen = pixel.getChannel(PixelChannel.GREEN);
+    int oldBlue = pixel.getChannel(PixelChannel.BLUE);
+
+    int newRed = (int)((oldRed * matrix[0][0]) +
+        (oldGreen * matrix[0][1]) +
+        (oldBlue * matrix[0][2]));
+    int newGreen = (int)((oldRed * matrix[1][0]) +
+        (oldGreen * matrix[1][1]) +
+        (oldBlue * matrix[1][2]));
+    int newBlue = (int)((oldRed * matrix[2][0]) +
+        (oldGreen * matrix[2][1]) +
+        (oldBlue * matrix[2][2]));
+    return new Pixel(newRed, newGreen, newBlue);
   }
 }

@@ -9,7 +9,7 @@ public interface ImageCommand {
    * Executes this command upon the given image.
    *
    * @param image the image to use this command on
-   * @throws IllegalStateException if this command cannot be used on the given image
+   * @throws IllegalArgumentException if the given image is invalid
    */
   Image go(Image image);
 }
