@@ -1,6 +1,7 @@
 package model;
 
 import model.Pixel.PixelChannel;
+import utils.ImageUtil;
 
 /**
  * Overlays this matrix centered on a pixel in the given image, multiplies the matrix's value by a
@@ -119,6 +120,9 @@ public class Filter implements ImageCommand {
       }
     }
 
-    return new Pixel(newRed, newGreen, newBlue);
+    return new Pixel(
+        ImageUtil.clamp(newRed, 255),
+        ImageUtil.clamp(newGreen, 255),
+        ImageUtil.clamp(newBlue, 255));
   }
 }

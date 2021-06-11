@@ -28,4 +28,18 @@ public class ImageCreator {
     }
     return image;
   }
+
+  public static Image createSolidSquare(int size, int red, int green, int blue) {
+    if (size <= 0 || red < 0 || green < 0 || blue < 0 || red > 255 ||  green > 255 || blue > 255) {
+      throw new IllegalArgumentException("Invalid arguments.");
+    }
+    Image image = new Image(size, size);
+    for (int xx = 0; xx < size; xx++) {
+      for (int yy = 0; yy < size; yy++) {
+        image.setPixel(xx, yy, new Pixel(red, green, blue));
+      }
+    }
+
+    return image;
+  }
 }

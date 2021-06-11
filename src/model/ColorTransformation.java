@@ -1,6 +1,7 @@
 package model;
 
 import model.Pixel.PixelChannel;
+import utils.ImageUtil;
 
 /**
  * Applies the given matrix to the channels of each pixel in a given image.
@@ -80,6 +81,7 @@ public class ColorTransformation implements ImageCommand {
 
   /**
    * Modifies a given pixel according to this object's matrix.
+   *
    * @param pixel the pixel to be modified
    * @return the modified pixel
    * @throws IllegalArgumentException if the given pixel is null
@@ -93,15 +95,18 @@ public class ColorTransformation implements ImageCommand {
     int oldGreen = pixel.getChannel(PixelChannel.GREEN);
     int oldBlue = pixel.getChannel(PixelChannel.BLUE);
 
-    int newRed = (int)((oldRed * matrix[0][0]) +
+    int newRed = (int) ((oldRed * matrix[0][0]) +
         (oldGreen * matrix[0][1]) +
         (oldBlue * matrix[0][2]));
-    int newGreen = (int)((oldRed * matrix[1][0]) +
+    int newGreen = (int) ((oldRed * matrix[1][0]) +
         (oldGreen * matrix[1][1]) +
         (oldBlue * matrix[1][2]));
-    int newBlue = (int)((oldRed * matrix[2][0]) +
+    int newBlue = (int) ((oldRed * matrix[2][0]) +
         (oldGreen * matrix[2][1]) +
         (oldBlue * matrix[2][2]));
-    return new Pixel(newRed, newGreen, newBlue);
+    return new Pixel(
+        ImageUtil.clamp(newRed, 255),
+        ImageUtil.clamp(newGreen, 255),
+        ImageUtil.clamp(newBlue, 255));
   }
 }

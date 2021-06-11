@@ -40,7 +40,7 @@ public class Pixel {
    * @return Whether the value is a valid channel value
    */
   private boolean invalidChannelValue(int value) {
-    return value >= 0 && value <= 255;
+    return value < 0 || value > 255;
   }
 
   /**
