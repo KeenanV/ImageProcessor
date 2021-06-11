@@ -30,14 +30,6 @@ public class ColorTransformation implements ImageCommand {
     public double[][] getMatrix() {
       return this.matrix;
     }
-
-    public int height() {
-      return matrix.length;
-    }
-
-    public int width() {
-      return matrix[0].length;
-    }
   }
 
   double[][] matrix;
@@ -71,9 +63,9 @@ public class ColorTransformation implements ImageCommand {
     }
 
     Image newImage = new Image(image.getWidth(), image.getHeight());
-    for (int x = 0; x < image.getWidth(); x += 1) {
-      for (int y = 0; y < image.getHeight(); y += 1) {
-        newImage.setPixel(x, y, applyToPixel(image.getPixel(x, y)));
+    for (int xx = 0; xx < image.getWidth(); xx++) {
+      for (int yy = 0; yy < image.getHeight(); yy++) {
+        newImage.setPixel(xx, yy, applyToPixel(image.getPixel(xx, yy)));
       }
     }
     return newImage;
@@ -87,10 +79,6 @@ public class ColorTransformation implements ImageCommand {
    * @throws IllegalArgumentException if the given pixel is null
    */
   private Pixel applyToPixel(Pixel pixel) {
-    if (pixel == null) {
-      throw new IllegalArgumentException();
-    }
-
     int oldRed = pixel.getChannel(PixelChannel.RED);
     int oldGreen = pixel.getChannel(PixelChannel.GREEN);
     int oldBlue = pixel.getChannel(PixelChannel.BLUE);

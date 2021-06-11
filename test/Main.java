@@ -3,41 +3,35 @@ import model.ColorTransformation.ColorTransformationMatrix;
 import model.Filter;
 import model.Filter.FilterMatrix;
 import model.Image;
-import model.ImageCreator;
 import utils.ImageUtil;
 
+/**
+ * Main class for testing.
+ */
 public class Main {
 
-  //demo main
+  /**
+   * Main method for testing purposes and to generate res files.
+   *
+   * @param args command line args
+   */
   public static void main(String[] args) {
     String path = "/Users/keenanv/Documents/NEU/CS3500/Projects/Image Processor/res/";
-    String readKoala = "Koala.ppm";
-    String writeKoala = "test.ppm";
-    String blur = "blur.ppm";
-    String blur2 = "blur2.ppm";
-    String sharpen = "sharpen.ppm";
-    String gray = "gray.ppm";
-    String sepia = "sepia.ppm";
-    String writeCheckers = "checkers.ppm";
+    Image guitar = ImageUtil.readPPM(path + "guitar.ppm");
+    Image trees = ImageUtil.readPPM(path + "trees.ppm");
 
-    /*
-    Image koala = ImageUtil.readPPM(path + readKoala);
-    ImageUtil.writePPM(path + blur, new Filter(FilterMatrix.BLUR).go(koala));
-    Image blurred = ImageUtil.readPPM(path + blur);
-    ImageUtil.writePPM(path + blur2, new Filter(FilterMatrix.BLUR).go(blurred));
-    ImageUtil.writePPM(path + sharpen, new Filter(FilterMatrix.SHARPEN).go(koala));
-    ImageUtil.writePPM(path + gray,
-        new ColorTransformation(ColorTransformationMatrix.GRAYSCALE).go(koala));
-    ImageUtil
-        .writePPM(path + sepia, new ColorTransformation(ColorTransformationMatrix.SEPIA).go(koala));
-    ImageUtil.writePPM(path + writeCheckers, ImageCreator.createCheckerboard(5, 100));
-     */
+    ImageUtil.writePPM(path + "guitarBlur.ppm", new Filter(FilterMatrix.BLUR).go(guitar));
+    ImageUtil.writePPM(path + "guitarSharpen.ppm", new Filter(FilterMatrix.SHARPEN).go(guitar));
+    ImageUtil.writePPM(path + "guitarGray.ppm",
+        new ColorTransformation(ColorTransformationMatrix.GRAYSCALE).go(guitar));
+    ImageUtil.writePPM(path + "guitarSepia.ppm",
+        new ColorTransformation(ColorTransformationMatrix.SEPIA).go(guitar));
 
-    ImageUtil.writePPM(path + "white.ppm", ImageCreator.createSolidSquare(100, 255, 255, 255));
-    ImageUtil.writePPM(path + "black.ppm", ImageCreator.createSolidSquare(100, 0, 0, 0));
-    ImageUtil.writePPM(path + "red.ppm", ImageCreator.createSolidSquare(100, 255, 0, 0));
-    ImageUtil.writePPM(path + "green.ppm", ImageCreator.createSolidSquare(100, 0, 255, 0));
-    ImageUtil.writePPM(path + "blue.ppm", ImageCreator.createSolidSquare(100, 0, 0, 255));
-    ImageUtil.writePPM(path + "checker.ppm", ImageCreator.createCheckerboard(10, 10));
+    ImageUtil.writePPM(path + "treesBlur.ppm", new Filter(FilterMatrix.BLUR).go(trees));
+    ImageUtil.writePPM(path + "treesSharpen.ppm", new Filter(FilterMatrix.SHARPEN).go(trees));
+    ImageUtil.writePPM(path + "treesGray.ppm",
+        new ColorTransformation(ColorTransformationMatrix.GRAYSCALE).go(trees));
+    ImageUtil.writePPM(path + "treesSepia.ppm",
+        new ColorTransformation(ColorTransformationMatrix.SEPIA).go(trees));
   }
 }

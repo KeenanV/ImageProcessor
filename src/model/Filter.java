@@ -35,14 +35,6 @@ public class Filter implements ImageCommand {
     public double[][] getMatrix() {
       return this.matrix;
     }
-
-    public int height() {
-      return matrix.length;
-    }
-
-    public int width() {
-      return matrix[0].length;
-    }
   }
 
   double[][] matrix;
@@ -76,9 +68,9 @@ public class Filter implements ImageCommand {
     }
 
     Image newImage = new Image(image.getWidth(), image.getHeight());
-    for (int x = 0; x < image.getWidth(); x += 1) {
-      for (int y = 0; y < image.getHeight(); y += 1) {
-        newImage.setPixel(x, y, applyToPixel(image, x, y));
+    for (int xx = 0; xx < image.getWidth(); xx++) {
+      for (int yy = 0; yy < image.getHeight(); yy++) {
+        newImage.setPixel(xx, yy, applyToPixel(image, xx, yy));
       }
     }
     return newImage;
@@ -87,7 +79,8 @@ public class Filter implements ImageCommand {
   /**
    * Modifies the pixel at the given position in the given image according to this object's matrix.
    * NOTE: does not modify the given image in any way.
-   * @param image the image containing the target pixel
+   *
+   * @param image  the image containing the target pixel
    * @param pixelX the x coordinate of the target pixel
    * @param pixelY the y coordinate of the target pixel
    * @return a new pixel, which would fit at the target location in the filtered image
@@ -95,26 +88,20 @@ public class Filter implements ImageCommand {
    *                                  bounds on the given image
    */
   private Pixel applyToPixel(Image image, int pixelX, int pixelY) {
-    if (image == null
-        || pixelX < 0 || pixelX >= image.getWidth()
-        || pixelY < 0 || pixelY >= image.getHeight()) {
-      throw new IllegalArgumentException();
-    }
-
     int newRed = 0;
     int newGreen = 0;
     int newBlue = 0;
 
-    for (int x = 0; x < matrix.length; x += 1) {
-      int xPosn = (pixelX + x) - ((matrix.length - 1) / 2);
+    for (int xx = 0; xx < matrix.length; xx++) {
+      int xPosn = (pixelX + xx) - ((matrix.length - 1) / 2);
       if (xPosn >= 0 && xPosn < image.getWidth()) {
-        for (int y = 0; y < matrix[0].length; y += 1) {
-          int yPosn = (pixelY + y) - ((matrix[0].length - 1) / 2);
+        for (int yy = 0; yy < matrix[0].length; yy++) {
+          int yPosn = (pixelY + yy) - ((matrix[0].length - 1) / 2);
           if (yPosn >= 0 && yPosn < image.getHeight()) {
             Pixel pixel = image.getPixel(xPosn, yPosn);
-            newRed += pixel.getChannel(PixelChannel.RED) * matrix[x][y];
-            newGreen += pixel.getChannel(PixelChannel.GREEN) * matrix[x][y];
-            newBlue += pixel.getChannel(PixelChannel.BLUE) * matrix[x][y];
+            newRed += pixel.getChannel(PixelChannel.RED) * matrix[xx][yy];
+            newGreen += pixel.getChannel(PixelChannel.GREEN) * matrix[xx][yy];
+            newBlue += pixel.getChannel(PixelChannel.BLUE) * matrix[xx][yy];
           }
         }
       }

@@ -31,12 +31,12 @@ public class Image {
   /**
    * Gets a copy of the pixel at the given coordinates.
    *
-   * @param x the x coordinate of the target pixel
-   * @param y the y coordinate of the target pixel
+   * @param xx the x coordinate of the target pixel
+   * @param yy the y coordinate of the target pixel
    * @return the indicated pixel
    */
-  public Pixel getPixel(int x, int y) {
-    Pixel pixel = pixels[x][y];
+  public Pixel getPixel(int xx, int yy) {
+    Pixel pixel = pixels[xx][yy];
     return new Pixel(pixel.getChannel(PixelChannel.RED),
         pixel.getChannel(PixelChannel.GREEN),
         pixel.getChannel(PixelChannel.BLUE));
@@ -45,12 +45,12 @@ public class Image {
   /**
    * Places the given pixel at the given coordinates in the image.
    *
-   * @param x     the x coordinate of the pixel's location
-   * @param y     the y coordinate of the pixel's location
+   * @param xx    the x coordinate of the pixel's location
+   * @param yy    the y coordinate of the pixel's location
    * @param pixel the pixel to be placed at the given coordinates
    */
-  public void setPixel(int x, int y, Pixel pixel) {
-    pixels[x][y] = pixel;
+  public void setPixel(int xx, int yy, Pixel pixel) {
+    pixels[xx][yy] = pixel;
   }
 
   /**
