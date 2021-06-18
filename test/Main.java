@@ -35,3 +35,19 @@ public class Main {
         new ColorTransformation(ColorTransformationMatrix.SEPIA).start(trees));
   }
 }
+
+/*
+TODO:
+- Change name from Image to Layer
+- Create interface for Image
+- Implement Image to store multiple layers
+- Create interface for Layer
+- Add util methods to support jpg and png
+- Add util methods to support multi-layered images
+- Add util method for reading from script
+- Create controller interface
+- Implement controller to work with batch commands
+- Create interface for Pixel
+- Add Pixel implementation to have a transparency channel
+- Move PixelChannel enum to separate file
+ */
