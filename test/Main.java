@@ -47,6 +47,8 @@ TODO:
 - Add util method for reading from script
 - Create controller interface
 - Implement controller to work with batch commands
+- Create view interface
+- Implement text-based view interface
 - Create interface for Pixel
 - Add Pixel implementation to have a transparency channel
 - Move PixelChannel enum to separate file
