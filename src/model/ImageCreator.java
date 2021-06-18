@@ -30,7 +30,7 @@ public class ImageCreator {
   }
 
   /**
-   * Creates an Image that is a square and every pixel is the same color
+   * Creates an Image that is a square and every pixel is the same color.
    *
    * @param size  side length of the square in pixels
    * @param red   red channel value (0-255)

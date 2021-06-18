@@ -57,7 +57,7 @@ public class ColorTransformation implements ImageCommand {
   }
 
   @Override
-  public Image go(Image image) {
+  public Image start(Image image) {
     if (image == null) {
       throw new IllegalArgumentException();
     }

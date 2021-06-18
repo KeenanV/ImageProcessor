@@ -72,10 +72,8 @@ public class ModelTests {
       return false;
     } else if (expected.getChannel(PixelChannel.GREEN) != actual.getChannel(PixelChannel.GREEN)) {
       return false;
-    } else if (expected.getChannel(PixelChannel.BLUE) != actual.getChannel(PixelChannel.BLUE)) {
-      return false;
     } else {
-      return true;
+      return expected.getChannel(PixelChannel.BLUE) == actual.getChannel(PixelChannel.BLUE);
     }
   }
 
@@ -223,7 +221,7 @@ public class ModelTests {
     setup();
 
     assertFalse(equalImages(blur, guitar));
-    assertTrue(equalImages(blur, new Filter(FilterMatrix.BLUR).go(guitar)));
+    assertTrue(equalImages(blur, new Filter(FilterMatrix.BLUR).start(guitar)));
   }
 
   @Test
@@ -231,18 +229,18 @@ public class ModelTests {
     setup();
 
     assertFalse(equalImages(sharpen, guitar));
-    assertTrue(equalImages(sharpen, new Filter(FilterMatrix.SHARPEN).go(guitar)));
+    assertTrue(equalImages(sharpen, new Filter(FilterMatrix.SHARPEN).start(guitar)));
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void filterNullImageTest() {
-    new Filter(FilterMatrix.SHARPEN).go(null);
+    new Filter(FilterMatrix.SHARPEN).start(null);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void filterEvenMatrixTest() {
     double[][] matrix = {{0, 1}, {2, 1.5}};
-    new Filter(matrix).go(guitar);
+    new Filter(matrix).start(guitar);
   }
 
   @Test
@@ -251,7 +249,8 @@ public class ModelTests {
 
     assertFalse(equalImages(gray, guitar));
     assertTrue(
-        equalImages(gray, new ColorTransformation(ColorTransformationMatrix.GRAYSCALE).go(guitar)));
+        equalImages(gray,
+            new ColorTransformation(ColorTransformationMatrix.GRAYSCALE).start(guitar)));
   }
 
   @Test
@@ -260,18 +259,18 @@ public class ModelTests {
 
     assertFalse(equalImages(sepia, guitar));
     assertTrue(
-        equalImages(sepia, new ColorTransformation(ColorTransformationMatrix.SEPIA).go(guitar)));
+        equalImages(sepia, new ColorTransformation(ColorTransformationMatrix.SEPIA).start(guitar)));
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void colorTransformationNullImageTest() {
-    new ColorTransformation(ColorTransformationMatrix.SEPIA).go(null);
+    new ColorTransformation(ColorTransformationMatrix.SEPIA).start(null);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void colorTransformationInvalidMatrixTest() {
     double[][] matrix = {{1, 2, 3}, {4, 1}};
-    new ColorTransformation(matrix).go(guitar);
+    new ColorTransformation(matrix).start(guitar);
   }
 
   @Test

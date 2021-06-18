@@ -7,7 +7,6 @@ import java.util.Scanner;
 import java.io.FileNotFoundException;
 import java.io.FileInputStream;
 import model.Image;
-import model.ImageCreator;
 import model.Pixel;
 import model.Pixel.PixelChannel;
 
@@ -19,7 +18,7 @@ import model.Pixel.PixelChannel;
 public class ImageUtil {
 
   /**
-   * Read an image file in the PPM format and return it as an Image
+   * Read an image file in the PPM format and return it as an Image.
    *
    * @param filename the path of the file.
    * @return Image representing the image file
@@ -111,7 +110,7 @@ public class ImageUtil {
   }
 
   /**
-   * Ensures a pixel channel value remains between 0 and the maxValue
+   * Ensures a pixel channel value remains between 0 and the maxValue.
    *
    * @param channelValue value of channel to be clamped
    * @param maxValue     maximum channel value for image

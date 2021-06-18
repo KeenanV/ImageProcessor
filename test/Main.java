@@ -20,18 +20,18 @@ public class Main {
     Image guitar = ImageUtil.readPPM(path + "guitar.ppm");
     Image trees = ImageUtil.readPPM(path + "trees.ppm");
 
-    ImageUtil.writePPM(path + "guitarBlur.ppm", new Filter(FilterMatrix.BLUR).go(guitar));
-    ImageUtil.writePPM(path + "guitarSharpen.ppm", new Filter(FilterMatrix.SHARPEN).go(guitar));
+    ImageUtil.writePPM(path + "guitarBlur.ppm", new Filter(FilterMatrix.BLUR).start(guitar));
+    ImageUtil.writePPM(path + "guitarSharpen.ppm", new Filter(FilterMatrix.SHARPEN).start(guitar));
     ImageUtil.writePPM(path + "guitarGray.ppm",
-        new ColorTransformation(ColorTransformationMatrix.GRAYSCALE).go(guitar));
+        new ColorTransformation(ColorTransformationMatrix.GRAYSCALE).start(guitar));
     ImageUtil.writePPM(path + "guitarSepia.ppm",
-        new ColorTransformation(ColorTransformationMatrix.SEPIA).go(guitar));
+        new ColorTransformation(ColorTransformationMatrix.SEPIA).start(guitar));
 
-    ImageUtil.writePPM(path + "treesBlur.ppm", new Filter(FilterMatrix.BLUR).go(trees));
-    ImageUtil.writePPM(path + "treesSharpen.ppm", new Filter(FilterMatrix.SHARPEN).go(trees));
+    ImageUtil.writePPM(path + "treesBlur.ppm", new Filter(FilterMatrix.BLUR).start(trees));
+    ImageUtil.writePPM(path + "treesSharpen.ppm", new Filter(FilterMatrix.SHARPEN).start(trees));
     ImageUtil.writePPM(path + "treesGray.ppm",
-        new ColorTransformation(ColorTransformationMatrix.GRAYSCALE).go(trees));
+        new ColorTransformation(ColorTransformationMatrix.GRAYSCALE).start(trees));
     ImageUtil.writePPM(path + "treesSepia.ppm",
-        new ColorTransformation(ColorTransformationMatrix.SEPIA).go(trees));
+        new ColorTransformation(ColorTransformationMatrix.SEPIA).start(trees));
   }
 }

@@ -11,7 +11,7 @@ import utils.ImageUtil;
 public class Filter implements ImageCommand {
 
   /**
-   * Represents a premade matrix for a filter
+   * Represents a premade matrix for a filter.
    */
   public enum FilterMatrix {
     BLUR(new double[][]{
@@ -62,7 +62,7 @@ public class Filter implements ImageCommand {
   }
 
   @Override
-  public Image go(Image image) {
+  public Image start(Image image) {
     if (image == null) {
       throw new IllegalArgumentException();
     }

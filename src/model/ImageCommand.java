@@ -11,5 +11,5 @@ public interface ImageCommand {
    * @param image the image to use this command on
    * @throws IllegalArgumentException if the given image is invalid
    */
-  Image go(Image image);
+  Image start(Image image);
 }
