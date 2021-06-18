@@ -1,73 +1,51 @@
 package model;
 
-import model.Pixel.PixelChannel;
-
 /**
- * Represents an image as a 2D array of Pixels.
+ * Represents an image, composed of multiple layers.
  */
-public class Image {
-
-  private Pixel[][] pixels;
+public interface Image {
 
   /**
-   * Creates a rectangular image of black pixels, with given width and height.
-   *
-   * @param width  the width of the image
-   * @param height the height of the image
-   * @throws IllegalArgumentException if either dimension is less than or equal to zero
+   * Returns the width of this image.
+   * @return the width of this image
    */
-  public Image(int width, int height) {
-    if (width <= 0 || height <= 0) {
-      throw new IllegalArgumentException("Invalid image dimension");
-    }
-    pixels = new Pixel[width][height];
-    for (int col = 0; col < width; col += 1) {
-      for (int row = 0; row < height; row += 1) {
-        pixels[col][row] = new Pixel(0, 0, 0);
-      }
-    }
-  }
+  int getWidth();
 
   /**
-   * Gets a copy of the pixel at the given coordinates.
-   *
-   * @param xx the x coordinate of the target pixel
-   * @param yy the y coordinate of the target pixel
-   * @return the indicated pixel
+   * Returns the height of this image.
+   * @return the height of this image
    */
-  public Pixel getPixel(int xx, int yy) {
-    Pixel pixel = pixels[xx][yy];
-    return new Pixel(pixel.getChannel(PixelChannel.RED),
-        pixel.getChannel(PixelChannel.GREEN),
-        pixel.getChannel(PixelChannel.BLUE));
-  }
+  int getHeight();
 
   /**
-   * Places the given pixel at the given coordinates in the image.
-   *
-   * @param xx    the x coordinate of the pixel's location
-   * @param yy    the y coordinate of the pixel's location
-   * @param pixel the pixel to be placed at the given coordinates
+   * Returns the number of layers in this image.
+   * @return the number of layers in this image
    */
-  public void setPixel(int xx, int yy, Pixel pixel) {
-    pixels[xx][yy] = pixel;
-  }
+  int getNumLayers();
 
   /**
-   * Gets the width of the image.
-   *
-   * @return the width of the image
+   * Inserts the given layer into this image at the indicated index, moving the layer at that index
+   * and every layer with a greater index up one position.
+   * @param layer the layer to be inserted
+   * @param index the index at which the layer is being inserted
+   * @throws IllegalArgumentException if the given layer is null, the layer does not match the size
+   *                                  of this image, the given index is invalid
    */
-  public int getWidth() {
-    return pixels.length;
-  }
+  void addLayer(Layer layer, int index);
 
   /**
-   * Gets the height of the image.
-   *
-   * @return the height of the image
+   * Removes the layer at the given index from this image, and returns it.
+   * @param index the index of the target layer
+   * @return the layer previously at the given index
+   * @throws IllegalArgumentException if the given index is invalid
    */
-  public int getHeight() {
-    return pixels[0].length;
-  }
+  Layer removeLayer(int index);
+
+  /**
+   * Returns the layer indicated by the given index.
+   * @param index the index of the target layer
+   * @return the layer at the given index
+   * @throws IllegalArgumentException if the given index is invalid
+   */
+  Layer getLayer(int index);
 }

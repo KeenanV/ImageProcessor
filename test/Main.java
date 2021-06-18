@@ -2,7 +2,8 @@ import model.ColorTransformation;
 import model.ColorTransformation.ColorTransformationMatrix;
 import model.Filter;
 import model.Filter.FilterMatrix;
-import model.Image;
+import model.Layer;
+import model.SimpleLayer;
 import utils.ImageUtil;
 
 /**
@@ -17,8 +18,8 @@ public class Main {
    */
   public static void main(String[] args) {
     String path = "/Users/keenanv/Documents/NEU/CS3500/Projects/Image Processor/res/";
-    Image guitar = ImageUtil.readPPM(path + "guitar.ppm");
-    Image trees = ImageUtil.readPPM(path + "trees.ppm");
+    Layer guitar = ImageUtil.readPPM(path + "guitar.ppm");
+    Layer trees = ImageUtil.readPPM(path + "trees.ppm");
 
     ImageUtil.writePPM(path + "guitarBlur.ppm", new Filter(FilterMatrix.BLUR).start(guitar));
     ImageUtil.writePPM(path + "guitarSharpen.ppm", new Filter(FilterMatrix.SHARPEN).start(guitar));
@@ -38,10 +39,6 @@ public class Main {
 
 /*
 TODO:
-- Change name from Image to Layer
-- Create interface for Image
-- Implement Image to store multiple layers
-- Create interface for Layer
 - Add util methods to support jpg and png
 - Add util methods to support multi-layered images
 - Add util method for reading from script
@@ -49,7 +46,4 @@ TODO:
 - Implement controller to work with batch commands
 - Create view interface
 - Implement text-based view interface
-- Create interface for Pixel
-- Add Pixel implementation to have a transparency channel
-- Move PixelChannel enum to separate file
  */

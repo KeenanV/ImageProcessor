@@ -6,9 +6,10 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
 import java.io.FileInputStream;
-import model.Image;
-import model.Pixel;
+import model.Layer;
+import model.SimpleLayer;
 import model.Pixel.PixelChannel;
+import model.SimplePixel;
 
 
 /**
@@ -24,7 +25,7 @@ public class ImageUtil {
    * @return Image representing the image file
    * @throws IllegalArgumentException if unable to access/read file
    */
-  public static Image readPPM(String filename) throws IllegalArgumentException {
+  public static Layer readPPM(String filename) throws IllegalArgumentException {
     Scanner sc;
 
     try {
@@ -53,7 +54,7 @@ public class ImageUtil {
     int width = sc.nextInt();
     int height = sc.nextInt();
 
-    Image image = new Image(width, height);
+    SimpleLayer image = new SimpleLayer(width, height);
 
     int maxValue = sc.nextInt();
 
@@ -62,7 +63,8 @@ public class ImageUtil {
         int rr = sc.nextInt();
         int gg = sc.nextInt();
         int bb = sc.nextInt();
-        image.setPixel(jj, ii, new Pixel(rr, gg, bb));
+        int tr = sc.nextInt();
+        image.setPixel(jj, ii, new SimplePixel(rr, gg, bb, tr));
       }
     }
 
@@ -76,7 +78,7 @@ public class ImageUtil {
    * @param image    Image to be written to file
    * @throws IllegalArgumentException if unable to access/write to file
    */
-  public static void writePPM(String filename, Image image) throws IllegalArgumentException {
+  public static void writePPM(String filename, Layer image) throws IllegalArgumentException {
     File file;
     FileWriter output;
     try {

@@ -6,10 +6,12 @@ import model.ColorTransformation;
 import model.ColorTransformation.ColorTransformationMatrix;
 import model.Filter;
 import model.Filter.FilterMatrix;
-import model.Image;
-import model.ImageCreator;
+import model.Layer;
+import model.SimpleLayer;
+import model.LayerCreator;
 import model.Pixel;
 import model.Pixel.PixelChannel;
+import model.SimplePixel;
 import org.junit.Test;
 import utils.ImageUtil;
 
@@ -18,17 +20,17 @@ import utils.ImageUtil;
  */
 public class ModelTests {
 
-  Image checker;
-  Image white;
-  Image black;
-  Image red;
-  Image green;
-  Image blue;
-  Image gray;
-  Image sepia;
-  Image blur;
-  Image sharpen;
-  Image guitar;
+  Layer checker;
+  Layer white;
+  Layer black;
+  Layer red;
+  Layer green;
+  Layer blue;
+  Layer gray;
+  Layer sepia;
+  Layer blur;
+  Layer sharpen;
+  Layer guitar;
   String path = "/Users/keenanv/Documents/NEU/CS3500/Projects/Image Processor/test/images/";
   String pathRes = "/Users/keenanv/Documents/NEU/CS3500/Projects/Image Processor/res/";
 
@@ -46,7 +48,7 @@ public class ModelTests {
     guitar = ImageUtil.readPPM(pathRes + "guitar.ppm");
   }
 
-  private boolean equalImages(Image expected, Image actual) {
+  private boolean equalLayers(Layer expected, Layer actual) {
     if (expected.getWidth() != actual.getWidth() || expected.getHeight() != actual.getHeight()) {
       return false;
     }
@@ -72,8 +74,11 @@ public class ModelTests {
       return false;
     } else if (expected.getChannel(PixelChannel.GREEN) != actual.getChannel(PixelChannel.GREEN)) {
       return false;
+    } else if (expected.getChannel(PixelChannel.BLUE) != actual.getChannel(PixelChannel.BLUE)) {
+      return false;
     } else {
-      return expected.getChannel(PixelChannel.BLUE) == actual.getChannel(PixelChannel.BLUE);
+      return expected.getChannel(PixelChannel.TRANSPARENCY) ==
+             actual.getChannel(PixelChannel.TRANSPARENCY);
     }
   }
 
@@ -82,23 +87,28 @@ public class ModelTests {
     setup();
     assertEquals(100, white.getHeight());
     assertEquals(100, white.getWidth());
-    assertTrue(equalPixels(white.getPixel(10, 10), new Pixel(255, 255, 255)));
+    assertTrue(equalPixels(white.getPixel(10, 10),
+               new SimplePixel(255, 255, 255, 100)));
 
     assertEquals(100, black.getHeight());
     assertEquals(100, black.getWidth());
-    assertTrue(equalPixels(black.getPixel(10, 10), new Pixel(0, 0, 0)));
+    assertTrue(equalPixels(black.getPixel(10, 10),
+                           new SimplePixel(0, 0, 0, 100)));
 
     assertEquals(100, red.getHeight());
     assertEquals(100, red.getWidth());
-    assertTrue(equalPixels(red.getPixel(10, 10), new Pixel(255, 0, 0)));
+    assertTrue(equalPixels(red.getPixel(10, 10),
+                           new SimplePixel(255, 0, 0, 100)));
 
     assertEquals(100, green.getHeight());
     assertEquals(100, green.getWidth());
-    assertTrue(equalPixels(green.getPixel(10, 10), new Pixel(0, 255, 0)));
+    assertTrue(equalPixels(green.getPixel(10, 10),
+                           new SimplePixel(0, 255, 0, 100)));
 
     assertEquals(100, blue.getHeight());
     assertEquals(100, blue.getWidth());
-    assertTrue(equalPixels(blue.getPixel(10, 10), new Pixel(0, 0, 255)));
+    assertTrue(equalPixels(blue.getPixel(10, 10),
+                           new SimplePixel(0, 0, 255, 100)));
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -114,61 +124,62 @@ public class ModelTests {
   @Test
   public void writePPMTest() {
     setup();
-    ImageUtil.writePPM(path + "checkerTest.ppm", ImageCreator.createCheckerboard(10, 10));
-    Image checkerTest = ImageUtil.readPPM(path + "checkerTest.ppm");
+    ImageUtil.writePPM(path + "checkerTest.ppm",
+                        LayerCreator.createCheckerboard(10, 10));
+    Layer checkerTest = ImageUtil.readPPM(path + "checkerTest.ppm");
 
     assertEquals(100, checkerTest.getWidth());
     assertEquals(100, checkerTest.getHeight());
-    assertTrue(equalImages(checker, checkerTest));
+    assertTrue(equalLayers(checker, checkerTest));
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void writePPMCannotWriteTest() {
-    ImageUtil.writePPM(path + "readonly.ppm", new Image(10, 10));
+    ImageUtil.writePPM(path + "readonly.ppm", new SimpleLayer(10, 10));
   }
 
   @Test
   public void createCheckerboardTest() {
     setup();
-    Image checkerTest = ImageCreator.createCheckerboard(10, 10);
+    SimpleLayer checkerTest = LayerCreator.createCheckerboard(10, 10);
 
-    assertTrue(equalImages(checker, checkerTest));
+    assertTrue(equalLayers(checker, checkerTest));
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void createCheckerboardNegSizeTest() {
-    ImageCreator.createCheckerboard(0, 10);
+    LayerCreator.createCheckerboard(0, 10);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void createCheckerboardNegSquaresTest() {
-    ImageCreator.createCheckerboard(10, 0);
+    LayerCreator.createCheckerboard(10, 0);
   }
 
   @Test
   public void createSolidSquareTest() {
     setup();
-    Image whiteTest = ImageCreator.createSolidSquare(100, 255, 255, 255);
-    Image blackTest = ImageCreator.createSolidSquare(100, 0, 0, 0);
-    Image redTest = ImageCreator.createSolidSquare(100, 255, 0, 0);
-    Image greenTest = ImageCreator.createSolidSquare(100, 0, 255, 0);
-    Image blueTest = ImageCreator.createSolidSquare(100, 0, 0, 255);
+    SimpleLayer whiteTest = LayerCreator.createSolidSquare(100, 255, 255, 255);
+    SimpleLayer blackTest = LayerCreator.createSolidSquare(100, 0, 0, 0);
+    SimpleLayer redTest = LayerCreator.createSolidSquare(100, 255, 0, 0);
+    SimpleLayer greenTest = LayerCreator.createSolidSquare(100, 0, 255, 0);
+    SimpleLayer blueTest = LayerCreator.createSolidSquare(100, 0, 0, 255);
 
-    assertTrue(equalImages(white, whiteTest));
-    assertTrue(equalImages(black, blackTest));
-    assertTrue(equalImages(red, redTest));
-    assertTrue(equalImages(green, greenTest));
-    assertTrue(equalImages(blue, blueTest));
+    assertTrue(equalLayers(white, whiteTest));
+    assertTrue(equalLayers(black, blackTest));
+    assertTrue(equalLayers(red, redTest));
+    assertTrue(equalLayers(green, greenTest));
+    assertTrue(equalLayers(blue, blueTest));
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void createSolidSquareNegSizeTest() {
-    ImageCreator.createSolidSquare(0, 10, 10, 10);
+    LayerCreator.createSolidSquare(0, 10, 10, 10);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void createSolidSquareInvalidChannelTest() {
-    ImageCreator.createSolidSquare(10, 256, -1, 10);
+    LayerCreator.createSolidSquare(10, 256, -1, 10);
   }
 
   @Test
@@ -191,7 +202,7 @@ public class ModelTests {
   @Test
   public void getWidthTest() {
     setup();
-    Image test = ImageCreator.createSolidSquare(1, 0, 0, 0);
+    SimpleLayer test = LayerCreator.createSolidSquare(1, 0, 0, 0);
 
     assertEquals(100, white.getWidth());
     assertEquals(1, test.getWidth());
@@ -200,7 +211,7 @@ public class ModelTests {
   @Test
   public void getHeightTest() {
     setup();
-    Image test = ImageCreator.createSolidSquare(1, 0, 0, 0);
+    SimpleLayer test = LayerCreator.createSolidSquare(1, 0, 0, 0);
 
     assertEquals(100, white.getHeight());
     assertEquals(1, test.getHeight());
@@ -210,26 +221,28 @@ public class ModelTests {
   public void setPixelTest() {
     setup();
 
-    assertTrue(equalPixels(new Pixel(255, 255, 255), white.getPixel(10, 10)));
+    assertTrue(equalPixels(new SimplePixel(255, 255, 255, 100),
+               white.getPixel(10, 10)));
 
-    white.setPixel(10, 10, new Pixel(144, 100, 200));
-    assertTrue(equalPixels(new Pixel(144, 100, 200), white.getPixel(10, 10)));
+    white.setPixel(10, 10, new SimplePixel(144, 100, 200, 100));
+    assertTrue(equalPixels(new SimplePixel(144, 100, 200, 100),
+               white.getPixel(10, 10)));
   }
 
   @Test
   public void filterBlurTest() {
     setup();
 
-    assertFalse(equalImages(blur, guitar));
-    assertTrue(equalImages(blur, new Filter(FilterMatrix.BLUR).start(guitar)));
+    assertFalse(equalLayers(blur, guitar));
+    assertTrue(equalLayers(blur, new Filter(FilterMatrix.BLUR).start(guitar)));
   }
 
   @Test
   public void filterSharpenTest() {
     setup();
 
-    assertFalse(equalImages(sharpen, guitar));
-    assertTrue(equalImages(sharpen, new Filter(FilterMatrix.SHARPEN).start(guitar)));
+    assertFalse(equalLayers(sharpen, guitar));
+    assertTrue(equalLayers(sharpen, new Filter(FilterMatrix.SHARPEN).start(guitar)));
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -247,9 +260,9 @@ public class ModelTests {
   public void colorTransformationGrayTest() {
     setup();
 
-    assertFalse(equalImages(gray, guitar));
+    assertFalse(equalLayers(gray, guitar));
     assertTrue(
-        equalImages(gray,
+        equalLayers(gray,
             new ColorTransformation(ColorTransformationMatrix.GRAYSCALE).start(guitar)));
   }
 
@@ -257,9 +270,9 @@ public class ModelTests {
   public void colorTransformationSepiaTest() {
     setup();
 
-    assertFalse(equalImages(sepia, guitar));
+    assertFalse(equalLayers(sepia, guitar));
     assertTrue(
-        equalImages(sepia, new ColorTransformation(ColorTransformationMatrix.SEPIA).start(guitar)));
+        equalLayers(sepia, new ColorTransformation(ColorTransformationMatrix.SEPIA).start(guitar)));
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -275,30 +288,31 @@ public class ModelTests {
 
   @Test
   public void imageConstructorTest() {
-    Image image = new Image(100, 200);
+    SimpleLayer image = new SimpleLayer(100, 200);
 
     assertEquals(100, image.getWidth());
     assertEquals(200, image.getHeight());
-    assertTrue(equalPixels(new Pixel(0, 0, 0), image.getPixel(10, 10)));
+    assertTrue(equalPixels(new SimplePixel(0, 0, 0, 100),
+               image.getPixel(10, 10)));
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void imageConstructorNegativeWidthTest() {
-    new Image(-1, 100);
+    new SimpleLayer(-1, 100);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void imageConstructorNegativeHeightTest() {
-    new Image(100, 0);
+    new SimpleLayer(100, 0);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void pixelConstructorNegativeTest() {
-    new Pixel(-2, 100, 100);
+    new SimplePixel(-2, 100, 100, 100);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void pixelConstructorPositiveTest() {
-    new Pixel(20, 300, 20);
+    new SimplePixel(20, 300, 20, 100);
   }
 }

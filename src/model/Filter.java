@@ -4,11 +4,11 @@ import model.Pixel.PixelChannel;
 import utils.ImageUtil;
 
 /**
- * Overlays this matrix centered on a pixel in the given image, multiplies the matrix's value by a
+ * Overlays this matrix centered on a pixel in the given layer, multiplies the matrix's value by a
  * channel in each overlaid pixel, then sets the value of that channel in the target pixel to the
- * sum of all the new values. Repeats for every channel of every pixel in the given image.
+ * sum of all the new values. Repeats for every channel of every pixel in the given layer.
  */
-public class Filter implements ImageCommand {
+public class Filter implements LayerCommand {
 
   /**
    * Represents a premade matrix for a filter.
@@ -62,43 +62,43 @@ public class Filter implements ImageCommand {
   }
 
   @Override
-  public Image start(Image image) {
-    if (image == null) {
+  public Layer start(Layer layer) {
+    if (layer == null) {
       throw new IllegalArgumentException();
     }
 
-    Image newImage = new Image(image.getWidth(), image.getHeight());
-    for (int xx = 0; xx < image.getWidth(); xx++) {
-      for (int yy = 0; yy < image.getHeight(); yy++) {
-        newImage.setPixel(xx, yy, applyToPixel(image, xx, yy));
+    Layer newImage = new SimpleLayer(layer.getWidth(), layer.getHeight());
+    for (int xx = 0; xx < layer.getWidth(); xx++) {
+      for (int yy = 0; yy < layer.getHeight(); yy++) {
+        newImage.setPixel(xx, yy, applyToPixel(layer, xx, yy));
       }
     }
     return newImage;
   }
 
   /**
-   * Modifies the pixel at the given position in the given image according to this object's matrix.
-   * NOTE: does not modify the given image in any way.
+   * Modifies the pixel at the given position in the given layer according to this object's matrix.
+   * NOTE: does not modify the given layer in any way.
    *
-   * @param image  the image containing the target pixel
+   * @param layer  the layer containing the target pixel
    * @param pixelX the x coordinate of the target pixel
    * @param pixelY the y coordinate of the target pixel
-   * @return a new pixel, which would fit at the target location in the filtered image
-   * @throws IllegalArgumentException if the given image is null or the given coordinates are out of
-   *                                  bounds on the given image
+   * @return a new pixel, which would fit at the target location in the filtered layer
+   * @throws IllegalArgumentException if the given layer is null or the given coordinates are out of
+   *                                  bounds on the given layer
    */
-  private Pixel applyToPixel(Image image, int pixelX, int pixelY) {
+  private Pixel applyToPixel(Layer layer, int pixelX, int pixelY) {
     int newRed = 0;
     int newGreen = 0;
     int newBlue = 0;
 
     for (int xx = 0; xx < matrix.length; xx++) {
       int xPosn = (pixelX + xx) - ((matrix.length - 1) / 2);
-      if (xPosn >= 0 && xPosn < image.getWidth()) {
+      if (xPosn >= 0 && xPosn < layer.getWidth()) {
         for (int yy = 0; yy < matrix[0].length; yy++) {
           int yPosn = (pixelY + yy) - ((matrix[0].length - 1) / 2);
-          if (yPosn >= 0 && yPosn < image.getHeight()) {
-            Pixel pixel = image.getPixel(xPosn, yPosn);
+          if (yPosn >= 0 && yPosn < layer.getHeight()) {
+            Pixel pixel = layer.getPixel(xPosn, yPosn);
             newRed += pixel.getChannel(PixelChannel.RED) * matrix[xx][yy];
             newGreen += pixel.getChannel(PixelChannel.GREEN) * matrix[xx][yy];
             newBlue += pixel.getChannel(PixelChannel.BLUE) * matrix[xx][yy];
@@ -107,9 +107,10 @@ public class Filter implements ImageCommand {
       }
     }
 
-    return new Pixel(
+    return new SimplePixel(
         ImageUtil.clamp(newRed, 255),
         ImageUtil.clamp(newGreen, 255),
-        ImageUtil.clamp(newBlue, 255));
+        ImageUtil.clamp(newBlue, 255),
+        layer.getPixel(pixelX, pixelY).getChannel(PixelChannel.TRANSPARENCY));
   }
 }

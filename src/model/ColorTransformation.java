@@ -4,9 +4,9 @@ import model.Pixel.PixelChannel;
 import utils.ImageUtil;
 
 /**
- * Applies the given matrix to the channels of each pixel in a given image.
+ * Applies the given matrix to the channels of each pixel in a given layer.
  */
-public class ColorTransformation implements ImageCommand {
+public class ColorTransformation implements LayerCommand {
 
   /**
    * Represents a premade matrix for a certain color transformation.
@@ -57,15 +57,15 @@ public class ColorTransformation implements ImageCommand {
   }
 
   @Override
-  public Image start(Image image) {
-    if (image == null) {
+  public Layer start(Layer layer) {
+    if (layer == null) {
       throw new IllegalArgumentException();
     }
 
-    Image newImage = new Image(image.getWidth(), image.getHeight());
-    for (int xx = 0; xx < image.getWidth(); xx++) {
-      for (int yy = 0; yy < image.getHeight(); yy++) {
-        newImage.setPixel(xx, yy, applyToPixel(image.getPixel(xx, yy)));
+    Layer newImage = new SimpleLayer(layer.getWidth(), layer.getHeight());
+    for (int xx = 0; xx < layer.getWidth(); xx++) {
+      for (int yy = 0; yy < layer.getHeight(); yy++) {
+        newImage.setPixel(xx, yy, applyToPixel(layer.getPixel(xx, yy)));
       }
     }
     return newImage;
@@ -92,9 +92,10 @@ public class ColorTransformation implements ImageCommand {
     int newBlue = (int) ((oldRed * matrix[2][0]) +
         (oldGreen * matrix[2][1]) +
         (oldBlue * matrix[2][2]));
-    return new Pixel(
+    return new SimplePixel(
         ImageUtil.clamp(newRed, 255),
         ImageUtil.clamp(newGreen, 255),
-        ImageUtil.clamp(newBlue, 255));
+        ImageUtil.clamp(newBlue, 255),
+        pixel.getChannel(PixelChannel.TRANSPARENCY));
   }
 }
