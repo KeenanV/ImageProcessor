@@ -191,22 +191,5 @@ public class ImageUtil {
       throw new IllegalArgumentException("Cannot write to file.");
     }
   }
-
-  /**
-   * Ensures a pixel channel value remains between 0 and the maxValue.
-   *
-   * @param channelValue value of channel to be clamped
-   * @param maxValue     maximum channel value for image
-   * @return clamped channel value
-   */
-  public static int clamp(int channelValue, int maxValue) {
-    if (channelValue > maxValue) {
-      return maxValue;
-    } else if (channelValue < 0) {
-      return 0;
-    } else {
-      return channelValue;
-    }
-  }
 }
 

@@ -7,6 +7,7 @@ import model.ColorTransformation.ColorTransformationMatrix;
 import model.Filter;
 import model.Filter.FilterMatrix;
 import model.Layer;
+import model.SimpleImage;
 import model.SimpleLayer;
 import model.LayerCreator;
 import model.Pixel;
@@ -31,21 +32,36 @@ public class ModelTests {
   Layer blur;
   Layer sharpen;
   Layer guitar;
-  String path = "/Users/keenanv/Documents/NEU/CS3500/Projects/Image Processor/test/images/";
-  String pathRes = "/Users/keenanv/Documents/NEU/CS3500/Projects/Image Processor/res/";
+  String projectPath = "/Users/avery/IdeaProjects/ImageProcessor";
+  String path = projectPath + "/test/images/";
+  String pathRes = projectPath + "/res/";
+  
+  enum SupportedFileType {
+    PPM("ppm"), JPEG("jpeg"), PNG("png");
+    
+    private final String suffix;
+    
+    SupportedFileType(String suffix) {
+      this.suffix = suffix;
+    }
+    
+    public String toString() {
+      return suffix;
+    }
+  }
 
-  private void setup() {
-    checker = ImageUtil.readPPM(path + "checker.ppm");
-    white = ImageUtil.readPPM(path + "white.ppm");
-    black = ImageUtil.readPPM(path + "black.ppm");
-    red = ImageUtil.readPPM(path + "red.ppm");
-    green = ImageUtil.readPPM(path + "green.ppm");
-    blue = ImageUtil.readPPM(path + "blue.ppm");
-    gray = ImageUtil.readPPM(pathRes + "guitarGray.ppm");
-    sepia = ImageUtil.readPPM(pathRes + "guitarSepia.ppm");
-    blur = ImageUtil.readPPM(pathRes + "guitarBlur.ppm");
-    sharpen = ImageUtil.readPPM(pathRes + "guitarSharpen.ppm");
-    guitar = ImageUtil.readPPM(pathRes + "guitar.ppm");
+  private void setup(SupportedFileType fileType) {
+    checker = ImageUtil.readPPM(path + "checker." + fileType);
+    white = ImageUtil.readPPM(path + "white." + fileType);
+    black = ImageUtil.readPPM(path + "black." + fileType);
+    red = ImageUtil.readPPM(path + "red." + fileType);
+    green = ImageUtil.readPPM(path + "green." + fileType);
+    blue = ImageUtil.readPPM(path + "blue." + fileType);
+    gray = ImageUtil.readPPM(pathRes + "guitarGray." + fileType);
+    sepia = ImageUtil.readPPM(pathRes + "guitarSepia." + fileType);
+    blur = ImageUtil.readPPM(pathRes + "guitarBlur." + fileType);
+    sharpen = ImageUtil.readPPM(pathRes + "guitarSharpen." + fileType);
+    guitar = ImageUtil.readPPM(pathRes + "guitar." + fileType);
   }
 
   private boolean equalLayers(Layer expected, Layer actual) {
@@ -80,32 +96,34 @@ public class ModelTests {
   }
 
   @Test
-  public void readPPMTest() {
-    setup();
-    assertEquals(100, white.getHeight());
-    assertEquals(100, white.getWidth());
-    assertTrue(equalPixels(white.getPixel(10, 10),
-               new SimplePixel(255, 255, 255)));
+  public void readFilesTest() {
+    for (SupportedFileType type : SupportedFileType.values()) {
+      setup(type);
+      assertEquals(100, white.getHeight());
+      assertEquals(100, white.getWidth());
+      assertTrue(equalPixels(white.getPixel(10, 10),
+          new SimplePixel(255, 255, 255)));
 
-    assertEquals(100, black.getHeight());
-    assertEquals(100, black.getWidth());
-    assertTrue(equalPixels(black.getPixel(10, 10),
-                           new SimplePixel(0, 0, 0)));
+      assertEquals(100, black.getHeight());
+      assertEquals(100, black.getWidth());
+      assertTrue(equalPixels(black.getPixel(10, 10),
+          new SimplePixel(0, 0, 0)));
 
-    assertEquals(100, red.getHeight());
-    assertEquals(100, red.getWidth());
-    assertTrue(equalPixels(red.getPixel(10, 10),
-                           new SimplePixel(255, 0, 0)));
+      assertEquals(100, red.getHeight());
+      assertEquals(100, red.getWidth());
+      assertTrue(equalPixels(red.getPixel(10, 10),
+          new SimplePixel(255, 0, 0)));
 
-    assertEquals(100, green.getHeight());
-    assertEquals(100, green.getWidth());
-    assertTrue(equalPixels(green.getPixel(10, 10),
-                           new SimplePixel(0, 255, 0)));
+      assertEquals(100, green.getHeight());
+      assertEquals(100, green.getWidth());
+      assertTrue(equalPixels(green.getPixel(10, 10),
+          new SimplePixel(0, 255, 0)));
 
-    assertEquals(100, blue.getHeight());
-    assertEquals(100, blue.getWidth());
-    assertTrue(equalPixels(blue.getPixel(10, 10),
-                           new SimplePixel(0, 0, 255)));
+      assertEquals(100, blue.getHeight());
+      assertEquals(100, blue.getWidth());
+      assertTrue(equalPixels(blue.getPixel(10, 10),
+          new SimplePixel(0, 0, 255)));
+    }
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -119,25 +137,27 @@ public class ModelTests {
   }
 
   @Test
-  public void writePPMTest() {
-    setup();
-    ImageUtil.writePPM(path + "checkerTest.ppm",
-                        LayerCreator.createCheckerboard(10, 10));
-    Layer checkerTest = ImageUtil.readPPM(path + "checkerTest.ppm");
+  public void writeFilesTest() {
+    for (SupportedFileType type : SupportedFileType.values()) {
+      setup(type);
+      ImageUtil.writePPM(path + "checkerTest.ppm",
+          LayerCreator.createCheckerboard(10, 10));
+      Layer checkerTest = ImageUtil.readPPM(path + "checkerTest.ppm");
 
-    assertEquals(100, checkerTest.getWidth());
-    assertEquals(100, checkerTest.getHeight());
-    assertTrue(equalLayers(checker, checkerTest));
+      assertEquals(100, checkerTest.getWidth());
+      assertEquals(100, checkerTest.getHeight());
+      assertTrue(equalLayers(checker, checkerTest));
+    }
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test//(expected = IllegalArgumentException.class)
   public void writePPMCannotWriteTest() {
     ImageUtil.writePPM(path + "readonly.ppm", new SimpleLayer(10, 10));
   }
 
   @Test
   public void createCheckerboardTest() {
-    setup();
+    setup(SupportedFileType.PPM);
     SimpleLayer checkerTest = LayerCreator.createCheckerboard(10, 10);
 
     assertTrue(equalLayers(checker, checkerTest));
@@ -155,7 +175,7 @@ public class ModelTests {
 
   @Test
   public void createSolidSquareTest() {
-    setup();
+    setup(SupportedFileType.PPM);
     SimpleLayer whiteTest = LayerCreator.createSolidSquare(100, 255, 255, 255);
     SimpleLayer blackTest = LayerCreator.createSolidSquare(100, 0, 0, 0);
     SimpleLayer redTest = LayerCreator.createSolidSquare(100, 255, 0, 0);
@@ -181,7 +201,7 @@ public class ModelTests {
 
   @Test
   public void getChannelTest() {
-    setup();
+    setup(SupportedFileType.PPM);
 
     assertEquals(255, red.getPixel(0, 0).getChannel(PixelChannel.RED));
     assertEquals(0, red.getPixel(0, 0).getChannel(PixelChannel.GREEN));
@@ -198,7 +218,7 @@ public class ModelTests {
 
   @Test
   public void getWidthTest() {
-    setup();
+    setup(SupportedFileType.PPM);
     SimpleLayer test = LayerCreator.createSolidSquare(1, 0, 0, 0);
 
     assertEquals(100, white.getWidth());
@@ -207,7 +227,7 @@ public class ModelTests {
 
   @Test
   public void getHeightTest() {
-    setup();
+    setup(SupportedFileType.PPM);
     SimpleLayer test = LayerCreator.createSolidSquare(1, 0, 0, 0);
 
     assertEquals(100, white.getHeight());
@@ -216,7 +236,7 @@ public class ModelTests {
 
   @Test
   public void setPixelTest() {
-    setup();
+    setup(SupportedFileType.PPM);
 
     assertTrue(equalPixels(new SimplePixel(255, 255, 255),
                white.getPixel(10, 10)));
@@ -228,7 +248,7 @@ public class ModelTests {
 
   @Test
   public void filterBlurTest() {
-    setup();
+    setup(SupportedFileType.PPM);
 
     assertFalse(equalLayers(blur, guitar));
     assertTrue(equalLayers(blur, new Filter(FilterMatrix.BLUR).start(guitar)));
@@ -236,7 +256,7 @@ public class ModelTests {
 
   @Test
   public void filterSharpenTest() {
-    setup();
+    setup(SupportedFileType.PPM);
 
     assertFalse(equalLayers(sharpen, guitar));
     assertTrue(equalLayers(sharpen, new Filter(FilterMatrix.SHARPEN).start(guitar)));
@@ -255,7 +275,7 @@ public class ModelTests {
 
   @Test
   public void colorTransformationGrayTest() {
-    setup();
+    setup(SupportedFileType.PPM);
 
     assertFalse(equalLayers(gray, guitar));
     assertTrue(
@@ -265,7 +285,7 @@ public class ModelTests {
 
   @Test
   public void colorTransformationSepiaTest() {
-    setup();
+    setup(SupportedFileType.PPM);
 
     assertFalse(equalLayers(sepia, guitar));
     assertTrue(
@@ -284,7 +304,7 @@ public class ModelTests {
   }
 
   @Test
-  public void imageConstructorTest() {
+  public void layerConstructorTest() {
     SimpleLayer image = new SimpleLayer(100, 200);
 
     assertEquals(100, image.getWidth());
@@ -294,12 +314,12 @@ public class ModelTests {
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public void imageConstructorNegativeWidthTest() {
+  public void layerConstructorNegativeWidthTest() {
     new SimpleLayer(-1, 100);
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public void imageConstructorNegativeHeightTest() {
+  public void layerConstructorNegativeHeightTest() {
     new SimpleLayer(100, 0);
   }
 
@@ -311,5 +331,103 @@ public class ModelTests {
   @Test(expected = IllegalArgumentException.class)
   public void pixelConstructorPositiveTest() {
     new SimplePixel(20, 300, 20);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void imageConstructorNegativeWidthTest() {
+    new SimpleImage(-1, 100);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void imageConstructorNegativeHeightTest() {
+    new SimpleImage(100, -1);
+  }
+
+  @Test
+  public void imageGetWidthTest() {
+    assertTrue(new SimpleImage(100, 200).getWidth() == 100);
+  }
+
+  @Test
+  public void imageGetHeightTest() {
+    assertTrue(new SimpleImage(100, 200).getHeight() == 200);
+  }
+
+  @Test
+  public void addOneLayerTest() {
+    setup(SupportedFileType.PPM);
+
+    SimpleImage test = new SimpleImage(red.getWidth(), red.getHeight());
+    test.addLayer(red, 0);
+
+    assertEquals(1, test.getNumLayers());
+
+    assertTrue(equalLayers(red, test.getLayer(0)));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void incorrectDimensionsAddLayerTest() {
+    setup(SupportedFileType.PPM);
+
+    SimpleImage test = new SimpleImage(10, 10);
+    test.addLayer(red, 0);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void nullLayerAddLayerTest() {
+    setup(SupportedFileType.PPM);
+
+    SimpleImage test = new SimpleImage(red.getWidth(), red.getHeight());
+    test.addLayer(null, 0);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidIndexAddLayerTest() {
+    setup(SupportedFileType.PPM);
+
+    SimpleImage test = new SimpleImage(red.getWidth(), red.getHeight());
+    test.addLayer(null, 1);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidIndexGetLayerTest() {
+    setup(SupportedFileType.PPM);
+
+    SimpleImage test = new SimpleImage(red.getWidth(), red.getHeight());
+    test.addLayer(red, 0);
+    test.getLayer(1);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void invalidIndexRemoveLayerTest() {
+    setup(SupportedFileType.PPM);
+
+    SimpleImage test = new SimpleImage(red.getWidth(), red.getHeight());
+    test.addLayer(red, 0);
+    test.removeLayer(1);
+  }
+
+  @Test
+  public void removeLayerTest() {
+    setup(SupportedFileType.PPM);
+
+    SimpleImage test = new SimpleImage(red.getWidth(), red.getHeight());
+    test.addLayer(red, 0);
+    assertEquals(1, test.getNumLayers());
+    assertTrue(equalLayers(red, test.removeLayer(0)));
+    assertEquals(0, test.getNumLayers());
+  }
+
+  @Test
+  public void removeMultipleLayersTest() {
+    setup(SupportedFileType.PPM);
+
+    SimpleImage test = new SimpleImage(red.getWidth(), red.getHeight());
+    test.addLayer(red, 0);
+    test.addLayer(green, 1);
+    assertEquals(2, test.getNumLayers());
+    assertTrue(equalLayers(red, test.removeLayer(0)));
+    assertTrue(equalLayers(green, test.removeLayer(0)));
+    assertEquals(0, test.getNumLayers());
   }
 }

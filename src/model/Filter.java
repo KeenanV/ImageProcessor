@@ -108,8 +108,8 @@ public class Filter implements LayerCommand {
     }
 
     return new SimplePixel(
-        ImageUtil.clamp(newRed, 255),
-        ImageUtil.clamp(newGreen, 255),
-        ImageUtil.clamp(newBlue, 255));
+        Math.max(0, Math.min(newRed, 255)),
+        Math.max(0, Math.min(newGreen, 255)),
+        Math.max(0, Math.min(newBlue, 255)));
   }
 }

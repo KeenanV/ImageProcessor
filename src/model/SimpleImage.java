@@ -35,7 +35,7 @@ public class SimpleImage implements Image {
   @Override
   public void addLayer(Layer layer, int index) throws IllegalArgumentException {
     if (layer == null || layer.getWidth() != this.width || layer.getHeight() != this.height
-        || invalidIndex(index)) {
+        || (invalidIndex(index) && index != layers.size())) {
       throw new IllegalArgumentException("Unable to add layer.");
     }
 

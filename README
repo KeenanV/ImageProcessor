@@ -1,29 +1,36 @@
-This project contains a Pixel class, and Image class, and ImageCommand interface, two classes
-Filter and ColorTransformation that implement ImageCommand, and an ImageCreator class all in the
-model package. There is also a utils package containing the ImageUtil class.
+This project contains a Pixel interface and its implementation SimplePixel, a Layer class and its
+implementation SimpleLayer, an Image class and its implementation SimpleImage, an LayerCommand
+interface and its two implementations Filter and ColorTransformation, and a LayerCreator class all
+in the model package. There is also a utils package containing the ImageUtil class.
 
 Pixel is a single pixel in an image, having three channels that represent its color. It also
 contains an enum, PixelChannel, that allows the user to easily distinguish between channels.
+SimplePixel is a pixel with just the functionality outlined in the Pixel interface.
 
-Image is a rectangle of pixels. An image stores a 2d array of pixels, whose dimensions are
-determined in the constructor.
+Layer is a rectangle of pixels which can be transparent or opaque. It can produce information about
+those pixels, and replace pixels with new ones. SimpleLayer is a layer with just the functionality
+outlined in the Layer interface, storing its pixels in a 2D array.
 
-ImageCommand is a command that can be executed upon an image. ImageCommand objects all have a "go"
-method, which takes an Image upon which the command is executed.
+Image is a collection of layers. It can produce information about those layers, and can add or
+remove layers. SimpleImage is an image that with just the functionality outlined in the Image
+interface, storing its layers in a List<Array>.
 
-Filter is an ImageCommand that alters the channels of the pixels in a given image based on the
+LayerCommand is a command that can be executed upon an layer. LayerCommand objects all have a "go"
+method, which takes an Layer upon which the command is executed.
+
+Filter is a LayerCommand that alters the channels of the pixels in a given image based on the
 channels of their neighbors. It contains an enum, FilterMatrix, which contains pre-made filters for
 the user to select from.
 
-ColorTransformation is an ImageCommand that alters the channels of the pixels in a given image based
+ColorTransformation is a LayerCommand that alters the channels of the pixels in a given image based
 the other channels of those individual pixels. It contains an enum, ColorTransformationMatrix, which
 contains pre-made color transformations for the user to select from.
 
-ImageCreator is a class containing two static methods, allowing the user to either create a
-checkerboard image or a solid square of given color based on certain parameters.
+LayerCreator is a class containing static methods, allowing the user to create a checkerboard
+image, a solid square of given color, or other simple images based on certain parameters.
 
-ImageUtil is a tool used to read PPM images from the computer's files, and to write a given Image
-into a PPM file.
+ImageUtil is a tool used to read image files from the computer's files, and to write a given Image
+into a file.
 
 Images used:
 https://free-images.com/display/mountain_landscape_panorama_mountain.html
