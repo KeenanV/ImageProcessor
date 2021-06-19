@@ -2,8 +2,9 @@ import model.ColorTransformation;
 import model.ColorTransformation.ColorTransformationMatrix;
 import model.Filter;
 import model.Filter.FilterMatrix;
+import model.Image;
 import model.Layer;
-import model.SimpleLayer;
+import model.SimpleImage;
 import utils.ImageUtil;
 
 /**
@@ -20,6 +21,12 @@ public class Main {
     String path = "/Users/keenanv/Documents/NEU/CS3500/Projects/Image Processor/res/";
     Layer guitar = ImageUtil.readPPM(path + "guitar.ppm");
     Layer trees = ImageUtil.readPPM(path + "trees.ppm");
+    Layer friday = ImageUtil.readFile(path + "friday.png");
+    Image image = new SimpleImage(friday.getWidth(), friday.getHeight());
+    image.addLayer(friday, 0);
+
+    ImageUtil.writePPM(path + "friday.ppm", image.getLayer(0));
+    ImageUtil.writeFile(path + "fridayNew.jpg", image.getLayer(0));
 
     ImageUtil.writePPM(path + "guitarBlur.ppm", new Filter(FilterMatrix.BLUR).start(guitar));
     ImageUtil.writePPM(path + "guitarSharpen.ppm", new Filter(FilterMatrix.SHARPEN).start(guitar));

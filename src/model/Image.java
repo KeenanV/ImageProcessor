@@ -31,7 +31,7 @@ public interface Image {
    * @throws IllegalArgumentException if the given layer is null, the layer does not match the size
    *                                  of this image, the given index is invalid
    */
-  void addLayer(Layer layer, int index);
+  void addLayer(Layer layer, int index) throws IllegalArgumentException;
 
   /**
    * Removes the layer at the given index from this image, and returns it.
@@ -39,7 +39,7 @@ public interface Image {
    * @return the layer previously at the given index
    * @throws IllegalArgumentException if the given index is invalid
    */
-  Layer removeLayer(int index);
+  Layer removeLayer(int index) throws IllegalArgumentException;
 
   /**
    * Returns the layer indicated by the given index.
@@ -47,5 +47,12 @@ public interface Image {
    * @return the layer at the given index
    * @throws IllegalArgumentException if the given index is invalid
    */
-  Layer getLayer(int index);
+  Layer getLayer(int index) throws IllegalArgumentException;
+
+  /**
+   * Returns the topmost visible layer in the image.
+   *
+   * @return the topmost visible layer or a black layer if there are no visible layers
+   */
+  Layer getTopVisibleLayer();
 }

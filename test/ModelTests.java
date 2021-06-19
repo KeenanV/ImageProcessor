@@ -74,11 +74,8 @@ public class ModelTests {
       return false;
     } else if (expected.getChannel(PixelChannel.GREEN) != actual.getChannel(PixelChannel.GREEN)) {
       return false;
-    } else if (expected.getChannel(PixelChannel.BLUE) != actual.getChannel(PixelChannel.BLUE)) {
-      return false;
     } else {
-      return expected.getChannel(PixelChannel.TRANSPARENCY) ==
-             actual.getChannel(PixelChannel.TRANSPARENCY);
+      return expected.getChannel(PixelChannel.BLUE) == actual.getChannel(PixelChannel.BLUE);
     }
   }
 
@@ -88,27 +85,27 @@ public class ModelTests {
     assertEquals(100, white.getHeight());
     assertEquals(100, white.getWidth());
     assertTrue(equalPixels(white.getPixel(10, 10),
-               new SimplePixel(255, 255, 255, 100)));
+               new SimplePixel(255, 255, 255)));
 
     assertEquals(100, black.getHeight());
     assertEquals(100, black.getWidth());
     assertTrue(equalPixels(black.getPixel(10, 10),
-                           new SimplePixel(0, 0, 0, 100)));
+                           new SimplePixel(0, 0, 0)));
 
     assertEquals(100, red.getHeight());
     assertEquals(100, red.getWidth());
     assertTrue(equalPixels(red.getPixel(10, 10),
-                           new SimplePixel(255, 0, 0, 100)));
+                           new SimplePixel(255, 0, 0)));
 
     assertEquals(100, green.getHeight());
     assertEquals(100, green.getWidth());
     assertTrue(equalPixels(green.getPixel(10, 10),
-                           new SimplePixel(0, 255, 0, 100)));
+                           new SimplePixel(0, 255, 0)));
 
     assertEquals(100, blue.getHeight());
     assertEquals(100, blue.getWidth());
     assertTrue(equalPixels(blue.getPixel(10, 10),
-                           new SimplePixel(0, 0, 255, 100)));
+                           new SimplePixel(0, 0, 255)));
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -221,11 +218,11 @@ public class ModelTests {
   public void setPixelTest() {
     setup();
 
-    assertTrue(equalPixels(new SimplePixel(255, 255, 255, 100),
+    assertTrue(equalPixels(new SimplePixel(255, 255, 255),
                white.getPixel(10, 10)));
 
-    white.setPixel(10, 10, new SimplePixel(144, 100, 200, 100));
-    assertTrue(equalPixels(new SimplePixel(144, 100, 200, 100),
+    white.setPixel(10, 10, new SimplePixel(144, 100, 200));
+    assertTrue(equalPixels(new SimplePixel(144, 100, 200),
                white.getPixel(10, 10)));
   }
 
@@ -292,7 +289,7 @@ public class ModelTests {
 
     assertEquals(100, image.getWidth());
     assertEquals(200, image.getHeight());
-    assertTrue(equalPixels(new SimplePixel(0, 0, 0, 100),
+    assertTrue(equalPixels(new SimplePixel(0, 0, 0),
                image.getPixel(10, 10)));
   }
 
@@ -308,11 +305,11 @@ public class ModelTests {
 
   @Test(expected = IllegalArgumentException.class)
   public void pixelConstructorNegativeTest() {
-    new SimplePixel(-2, 100, 100, 100);
+    new SimplePixel(-2, 100, 100);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void pixelConstructorPositiveTest() {
-    new SimplePixel(20, 300, 20, 100);
+    new SimplePixel(20, 300, 20);
   }
 }

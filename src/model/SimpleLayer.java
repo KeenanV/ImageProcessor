@@ -7,7 +7,8 @@ import model.Pixel.PixelChannel;
  */
 public class SimpleLayer implements Layer {
 
-  private Pixel[][] pixels;
+  private final Pixel[][] pixels;
+  private boolean visible;
 
   /**
    * Creates a rectangular image of black pixels, with given width and height.
@@ -20,26 +21,37 @@ public class SimpleLayer implements Layer {
     if (width <= 0 || height <= 0) {
       throw new IllegalArgumentException("Invalid image dimension");
     }
+    visible = true;
     pixels = new Pixel[width][height];
     for (int col = 0; col < width; col += 1) {
       for (int row = 0; row < height; row += 1) {
-        pixels[col][row] = new SimplePixel(0, 0, 0, 100);
+        pixels[col][row] = new SimplePixel(0, 0, 0);
       }
     }
   }
 
   @Override
-  public Pixel getPixel(int xx, int yy) {
+  public Pixel getPixel(int xx, int yy) throws IllegalArgumentException {
+    if (invalidIndex(xx, yy)) {
+      throw new IllegalArgumentException("Invalid pixel index.");
+    }
     Pixel pixel = pixels[xx][yy];
     return new SimplePixel(pixel.getChannel(PixelChannel.RED),
         pixel.getChannel(PixelChannel.GREEN),
-        pixel.getChannel(PixelChannel.BLUE),
-        pixel.getChannel(PixelChannel.TRANSPARENCY));
+        pixel.getChannel(PixelChannel.BLUE));
   }
 
   @Override
-  public void setPixel(int xx, int yy, Pixel pixel) {
+  public void setPixel(int xx, int yy, Pixel pixel) throws IllegalArgumentException {
+    if (invalidIndex(xx, yy)) {
+      throw new IllegalArgumentException("Invalid pixel index.");
+    }
     pixels[xx][yy] = pixel;
+  }
+
+  @Override
+  public void setVisible(boolean visible) {
+    this.visible = visible;
   }
 
   @Override
@@ -50,5 +62,14 @@ public class SimpleLayer implements Layer {
   @Override
   public int getHeight() {
     return pixels[0].length;
+  }
+
+  @Override
+  public boolean getVisible() {
+    return visible;
+  }
+
+  private boolean invalidIndex(int xx, int yy) {
+    return xx < 0 || xx >= pixels.length || yy < 0 || yy >= pixels[0].length;
   }
 }

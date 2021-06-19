@@ -1,11 +1,14 @@
 package utils;
 
+import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
 import java.io.FileInputStream;
+import javax.imageio.ImageIO;
 import model.Layer;
 import model.SimpleLayer;
 import model.Pixel.PixelChannel;
@@ -26,6 +29,10 @@ public class ImageUtil {
    * @throws IllegalArgumentException if unable to access/read file
    */
   public static Layer readPPM(String filename) throws IllegalArgumentException {
+    if (filename == null) {
+      throw new IllegalArgumentException("Cannot have null argument.");
+    }
+
     Scanner sc;
 
     try {
@@ -54,21 +61,20 @@ public class ImageUtil {
     int width = sc.nextInt();
     int height = sc.nextInt();
 
-    SimpleLayer image = new SimpleLayer(width, height);
+    SimpleLayer layer = new SimpleLayer(width, height);
 
-    int maxValue = sc.nextInt();
+    int _maxValue = sc.nextInt();
 
-    for (int ii = 0; ii < height; ii++) {
-      for (int jj = 0; jj < width; jj++) {
+    for (int yy = 0; yy < height; yy++) {
+      for (int xx = 0; xx < width; xx++) {
         int rr = sc.nextInt();
         int gg = sc.nextInt();
         int bb = sc.nextInt();
-        int tr = sc.nextInt();
-        image.setPixel(jj, ii, new SimplePixel(rr, gg, bb, tr));
+        layer.setPixel(xx, yy, new SimplePixel(rr, gg, bb));
       }
     }
 
-    return image;
+    return layer;
   }
 
   /**
@@ -79,6 +85,10 @@ public class ImageUtil {
    * @throws IllegalArgumentException if unable to access/write to file
    */
   public static void writePPM(String filename, Layer image) throws IllegalArgumentException {
+    if (filename == null || image == null) {
+      throw new IllegalArgumentException("Cannot have null arguments.");
+    }
+
     File file;
     FileWriter output;
     try {
@@ -98,16 +108,87 @@ public class ImageUtil {
       output.write(image.getWidth() + " " + image.getHeight() + "\n");
       output.write("255\n");
 
-      for (int ii = 0; ii < image.getHeight(); ii++) {
-        for (int jj = 0; jj < image.getWidth(); jj++) {
-          output.write(image.getPixel(jj, ii).getChannel(PixelChannel.RED) + "\n");
-          output.write(image.getPixel(jj, ii).getChannel(PixelChannel.GREEN) + "\n");
-          output.write(image.getPixel(jj, ii).getChannel(PixelChannel.BLUE) + "\n");
+      for (int yy = 0; yy < image.getHeight(); yy++) {
+        for (int xx = 0; xx < image.getWidth(); xx++) {
+          output.write(image.getPixel(xx, yy).getChannel(PixelChannel.RED) + "\n");
+          output.write(image.getPixel(xx, yy).getChannel(PixelChannel.GREEN) + "\n");
+          output.write(image.getPixel(xx, yy).getChannel(PixelChannel.BLUE) + "\n");
         }
       }
       output.close();
     } catch (IOException e) {
       throw new IllegalArgumentException("Unable to write to file.");
+    }
+  }
+
+  /**
+   * Reads an image file and creates a Layer from it.
+   *
+   * @param filename path to the file
+   * @return a Layer representing the image file
+   * @throws IllegalArgumentException if image cannot be read or if null argument is input
+   */
+  public static Layer readFile(String filename) throws IllegalArgumentException {
+    if (filename == null) {
+      throw new IllegalArgumentException("Cannot have null argument.");
+    }
+
+    File file = new File(filename);
+    BufferedImage image;
+    try {
+      image = ImageIO.read(file);
+    } catch (IOException e) {
+      throw new IllegalArgumentException("Cannot read image.");
+    }
+
+    Layer layer = new SimpleLayer(image.getWidth(), image.getHeight());
+    for (int xx = 0; xx < image.getWidth(); xx++) {
+      for (int yy = 0; yy < image.getHeight(); yy++) {
+        Color pixel = new Color(image.getRGB(xx, yy));
+        layer.setPixel(xx, yy, new SimplePixel(pixel.getRed(), pixel.getGreen(), pixel.getBlue()));
+      }
+    }
+
+    return layer;
+  }
+
+  /**
+   * Writes a Layer to an image file.
+   *
+   * @param filename path of the file
+   * @param layer layer to be written
+   * @throws IllegalArgumentException if the writing fails or if null arguments are input
+   */
+  public static void writeFile(String filename, Layer layer) throws IllegalArgumentException {
+    if (filename == null || layer == null) {
+      throw new IllegalArgumentException("Cannot have null arguments.");
+    }
+
+    String type = "jpg";
+    for (int ii = filename.length() - 1; ii >= 0; ii--) {
+      if (filename.charAt(ii) == '.' && ii != filename.length() - 1) {
+        type = filename.substring(ii + 1);
+        break;
+      }
+    }
+
+    BufferedImage image = new BufferedImage(layer.getWidth(), layer.getHeight(),
+        BufferedImage.TYPE_INT_RGB);
+    for (int xx = 0; xx < layer.getWidth(); xx++) {
+      for (int yy = 0; yy < layer.getHeight(); yy++) {
+        int red = layer.getPixel(xx, yy).getChannel(PixelChannel.RED);
+        int green = layer.getPixel(xx, yy).getChannel(PixelChannel.GREEN);
+        int blue = layer.getPixel(xx, yy).getChannel(PixelChannel.BLUE);
+        image.setRGB(xx, yy, new Color(red, green, blue).getRGB());
+      }
+    }
+
+    try {
+      File file = new File(filename);
+      file.createNewFile();
+      ImageIO.write(image, type, file);
+    } catch (IOException e) {
+      throw new IllegalArgumentException("Cannot write to file.");
     }
   }
 

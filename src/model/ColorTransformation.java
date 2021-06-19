@@ -95,7 +95,6 @@ public class ColorTransformation implements LayerCommand {
     return new SimplePixel(
         ImageUtil.clamp(newRed, 255),
         ImageUtil.clamp(newGreen, 255),
-        ImageUtil.clamp(newBlue, 255),
-        pixel.getChannel(PixelChannel.TRANSPARENCY));
+        ImageUtil.clamp(newBlue, 255));
   }
 }

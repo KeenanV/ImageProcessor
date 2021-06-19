@@ -110,7 +110,6 @@ public class Filter implements LayerCommand {
     return new SimplePixel(
         ImageUtil.clamp(newRed, 255),
         ImageUtil.clamp(newGreen, 255),
-        ImageUtil.clamp(newBlue, 255),
-        layer.getPixel(pixelX, pixelY).getChannel(PixelChannel.TRANSPARENCY));
+        ImageUtil.clamp(newBlue, 255));
   }
 }
