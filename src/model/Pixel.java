@@ -9,7 +9,7 @@ public interface Pixel {
    * The three channels of the pixel's color, and a fourth for its transparency.
    */
   enum PixelChannel {
-    RED, GREEN, BLUE, TRANSPARENCY
+    RED, GREEN, BLUE
   }
 
   /**
