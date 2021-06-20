@@ -1,6 +1,8 @@
 Supported commands:
 new
   -creates a new layer
+remove [layer number 1-indexed]
+  -removes the specified layer
 print
   -prints the size of the image and current layers + their visibility
 current [layer number 1-indexed]

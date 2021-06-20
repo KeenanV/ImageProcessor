@@ -157,6 +157,7 @@ public class ImageUtil {
         if (filename.substring(ii + 1).equals("ppm")) {
           return readPPM(filename);
         }
+        break;
       }
     }
     File file = new File(filename);
@@ -256,6 +257,11 @@ public class ImageUtil {
       for (int ii = 0; ii < image.getNumLayers(); ii++) {
         writeFile(filename + "layer" + ii + ".jpg", image.getLayer(ii));
         output.write(filename + "layer" + ii + ".jpg\n");
+        if (image.getLayer(ii).getVisible()) {
+          output.write("visible\n");
+        } else {
+          output.write("invisible\n");
+        }
       }
       output.close();
     } catch (IOException e) {
@@ -291,7 +297,9 @@ public class ImageUtil {
 
     Image image = new SimpleImage(Integer.parseInt(sc.nextLine()), Integer.parseInt(sc.nextLine()));
     while (sc.hasNextLine()) {
-      image.addLayer(readFile(sc.nextLine()));
+      Layer layer = readFile(sc.nextLine());
+      layer.setVisible(sc.nextLine().equals("visible"));
+      image.addLayer(layer);
     }
 
     return image;

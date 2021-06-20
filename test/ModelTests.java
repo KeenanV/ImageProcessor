@@ -10,11 +10,11 @@ import model.Layer;
 import model.SimpleImage;
 import model.SimpleLayer;
 import model.LayerCreator;
-import model.Pixel;
 import model.Pixel.PixelChannel;
 import model.SimplePixel;
 import org.junit.Test;
 import utils.ImageUtil;
+import utils.TestingUtil;
 
 /**
  * Test class for the model.
@@ -32,19 +32,19 @@ public class ModelTests {
   Layer blur;
   Layer sharpen;
   Layer guitar;
-  String projectPath = "/Users/avery/IdeaProjects/ImageProcessor";
+  String projectPath = "/Users/keenanv/Documents/NEU/CS3500/Projects/Image Processor";
   String path = projectPath + "/test/images/";
   String pathRes = projectPath + "/res/";
-  
+
   enum SupportedFileType {
     PPM("ppm"), JPEG("jpeg"), PNG("png");
-    
+
     private final String suffix;
-    
+
     SupportedFileType(String suffix) {
       this.suffix = suffix;
     }
-    
+
     public String toString() {
       return suffix;
     }
@@ -64,64 +64,33 @@ public class ModelTests {
     guitar = ImageUtil.readPPM(pathRes + "guitar." + fileType);
   }
 
-  private boolean equalLayers(Layer expected, Layer actual) {
-    if (expected.getWidth() != actual.getWidth() || expected.getHeight() != actual.getHeight()) {
-      return false;
-    }
-    for (int xx = 0; xx < expected.getWidth(); xx++) {
-      for (int yy = 0; yy < expected.getHeight(); yy++) {
-        if (expected.getPixel(xx, yy).getChannel(PixelChannel.RED)
-            != actual.getPixel(xx, yy).getChannel(PixelChannel.RED)) {
-          return false;
-        } else if (expected.getPixel(xx, yy).getChannel(PixelChannel.GREEN)
-            != actual.getPixel(xx, yy).getChannel(PixelChannel.GREEN)) {
-          return false;
-        } else if (expected.getPixel(xx, yy).getChannel(PixelChannel.BLUE)
-            != actual.getPixel(xx, yy).getChannel(PixelChannel.BLUE)) {
-          return false;
-        }
-      }
-    }
-    return true;
-  }
-
-  private boolean equalPixels(Pixel expected, Pixel actual) {
-    if (expected.getChannel(PixelChannel.RED) != actual.getChannel(PixelChannel.RED)) {
-      return false;
-    } else if (expected.getChannel(PixelChannel.GREEN) != actual.getChannel(PixelChannel.GREEN)) {
-      return false;
-    } else {
-      return expected.getChannel(PixelChannel.BLUE) == actual.getChannel(PixelChannel.BLUE);
-    }
-  }
-
   @Test
   public void readFilesTest() {
     for (SupportedFileType type : SupportedFileType.values()) {
       setup(type);
       assertEquals(100, white.getHeight());
       assertEquals(100, white.getWidth());
-      assertTrue(equalPixels(white.getPixel(10, 10),
+      assertTrue(TestingUtil.equalPixels(white.getPixel(10, 10),
           new SimplePixel(255, 255, 255)));
 
       assertEquals(100, black.getHeight());
       assertEquals(100, black.getWidth());
-      assertTrue(equalPixels(black.getPixel(10, 10),
+      assertTrue(TestingUtil.equalPixels(black.getPixel(10, 10),
           new SimplePixel(0, 0, 0)));
 
       assertEquals(100, red.getHeight());
       assertEquals(100, red.getWidth());
-      assertTrue(equalPixels(red.getPixel(10, 10),
+      assertTrue(TestingUtil.equalPixels(red.getPixel(10, 10),
           new SimplePixel(255, 0, 0)));
 
       assertEquals(100, green.getHeight());
       assertEquals(100, green.getWidth());
-      assertTrue(equalPixels(green.getPixel(10, 10),
+      assertTrue(TestingUtil.equalPixels(green.getPixel(10, 10),
           new SimplePixel(0, 255, 0)));
 
       assertEquals(100, blue.getHeight());
       assertEquals(100, blue.getWidth());
-      assertTrue(equalPixels(blue.getPixel(10, 10),
+      assertTrue(TestingUtil.equalPixels(blue.getPixel(10, 10),
           new SimplePixel(0, 0, 255)));
     }
   }
@@ -146,13 +115,33 @@ public class ModelTests {
 
       assertEquals(100, checkerTest.getWidth());
       assertEquals(100, checkerTest.getHeight());
-      assertTrue(equalLayers(checker, checkerTest));
+      assertTrue(TestingUtil.equalLayers(checker, checkerTest));
     }
   }
 
-  @Test//(expected = IllegalArgumentException.class)
+  @Test//(expected = IllegalArgumentException.class)//TODO fix
   public void writePPMCannotWriteTest() {
     ImageUtil.writePPM(path + "readonly.ppm", new SimpleLayer(10, 10));
+  }
+
+  @Test
+  public void readMultiLayerImageTest() {
+    //TODO
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void readMultiLayerImageErrorTest() {
+    //TODO
+  }
+
+  @Test
+  public void writeMultiLayerImageTest() {
+    //TODO
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void writeMultiLayerImageErrorTest() {
+    //TODO
   }
 
   @Test
@@ -160,7 +149,7 @@ public class ModelTests {
     setup(SupportedFileType.PPM);
     SimpleLayer checkerTest = LayerCreator.createCheckerboard(10, 10);
 
-    assertTrue(equalLayers(checker, checkerTest));
+    assertTrue(TestingUtil.equalLayers(checker, checkerTest));
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -182,11 +171,11 @@ public class ModelTests {
     SimpleLayer greenTest = LayerCreator.createSolidSquare(100, 0, 255, 0);
     SimpleLayer blueTest = LayerCreator.createSolidSquare(100, 0, 0, 255);
 
-    assertTrue(equalLayers(white, whiteTest));
-    assertTrue(equalLayers(black, blackTest));
-    assertTrue(equalLayers(red, redTest));
-    assertTrue(equalLayers(green, greenTest));
-    assertTrue(equalLayers(blue, blueTest));
+    assertTrue(TestingUtil.equalLayers(white, whiteTest));
+    assertTrue(TestingUtil.equalLayers(black, blackTest));
+    assertTrue(TestingUtil.equalLayers(red, redTest));
+    assertTrue(TestingUtil.equalLayers(green, greenTest));
+    assertTrue(TestingUtil.equalLayers(blue, blueTest));
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -238,28 +227,28 @@ public class ModelTests {
   public void setPixelTest() {
     setup(SupportedFileType.PPM);
 
-    assertTrue(equalPixels(new SimplePixel(255, 255, 255),
-               white.getPixel(10, 10)));
+    assertTrue(TestingUtil.equalPixels(new SimplePixel(255, 255, 255),
+        white.getPixel(10, 10)));
 
     white.setPixel(10, 10, new SimplePixel(144, 100, 200));
-    assertTrue(equalPixels(new SimplePixel(144, 100, 200),
-               white.getPixel(10, 10)));
+    assertTrue(TestingUtil.equalPixels(new SimplePixel(144, 100, 200),
+        white.getPixel(10, 10)));
   }
 
   @Test
   public void filterBlurTest() {
     setup(SupportedFileType.PPM);
 
-    assertFalse(equalLayers(blur, guitar));
-    assertTrue(equalLayers(blur, new Filter(FilterMatrix.BLUR).start(guitar)));
+    assertFalse(TestingUtil.equalLayers(blur, guitar));
+    assertTrue(TestingUtil.equalLayers(blur, new Filter(FilterMatrix.BLUR).start(guitar)));
   }
 
   @Test
   public void filterSharpenTest() {
     setup(SupportedFileType.PPM);
 
-    assertFalse(equalLayers(sharpen, guitar));
-    assertTrue(equalLayers(sharpen, new Filter(FilterMatrix.SHARPEN).start(guitar)));
+    assertFalse(TestingUtil.equalLayers(sharpen, guitar));
+    assertTrue(TestingUtil.equalLayers(sharpen, new Filter(FilterMatrix.SHARPEN).start(guitar)));
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -277,9 +266,9 @@ public class ModelTests {
   public void colorTransformationGrayTest() {
     setup(SupportedFileType.PPM);
 
-    assertFalse(equalLayers(gray, guitar));
+    assertFalse(TestingUtil.equalLayers(gray, guitar));
     assertTrue(
-        equalLayers(gray,
+        TestingUtil.equalLayers(gray,
             new ColorTransformation(ColorTransformationMatrix.GRAYSCALE).start(guitar)));
   }
 
@@ -287,9 +276,9 @@ public class ModelTests {
   public void colorTransformationSepiaTest() {
     setup(SupportedFileType.PPM);
 
-    assertFalse(equalLayers(sepia, guitar));
+    assertFalse(TestingUtil.equalLayers(sepia, guitar));
     assertTrue(
-        equalLayers(sepia, new ColorTransformation(ColorTransformationMatrix.SEPIA).start(guitar)));
+        TestingUtil.equalLayers(sepia, new ColorTransformation(ColorTransformationMatrix.SEPIA).start(guitar)));
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -309,8 +298,8 @@ public class ModelTests {
 
     assertEquals(100, image.getWidth());
     assertEquals(200, image.getHeight());
-    assertTrue(equalPixels(new SimplePixel(0, 0, 0),
-               image.getPixel(10, 10)));
+    assertTrue(TestingUtil.equalPixels(new SimplePixel(0, 0, 0),
+        image.getPixel(10, 10)));
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -362,7 +351,7 @@ public class ModelTests {
 
     assertEquals(1, test.getNumLayers());
 
-    assertTrue(equalLayers(red, test.getLayer(0)));
+    assertTrue(TestingUtil.equalLayers(red, test.getLayer(0)));
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -414,7 +403,7 @@ public class ModelTests {
     SimpleImage test = new SimpleImage(red.getWidth(), red.getHeight());
     test.addLayer(red);
     assertEquals(1, test.getNumLayers());
-    assertTrue(equalLayers(red, test.removeLayer(0)));
+    assertTrue(TestingUtil.equalLayers(red, test.removeLayer(0)));
     assertEquals(0, test.getNumLayers());
   }
 
@@ -426,8 +415,8 @@ public class ModelTests {
     test.addLayer(red);
     test.addLayer(green);
     assertEquals(2, test.getNumLayers());
-    assertTrue(equalLayers(red, test.removeLayer(0)));
-    assertTrue(equalLayers(green, test.removeLayer(0)));
+    assertTrue(TestingUtil.equalLayers(red, test.removeLayer(0)));
+    assertTrue(TestingUtil.equalLayers(green, test.removeLayer(0)));
     assertEquals(0, test.getNumLayers());
   }
 }

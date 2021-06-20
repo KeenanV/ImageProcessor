@@ -33,6 +33,7 @@ public class SimpleController implements Controller {
    * @param image image to be used with the controller
    * @param ap    Appendable to be used for output
    * @param rd    Readable to be used for input
+   * @throws IllegalArgumentException if arguments are null
    */
   public SimpleController(Image image, Appendable ap, Readable rd) throws IllegalArgumentException {
     if (image == null || ap == null || rd == null) {
@@ -43,6 +44,14 @@ public class SimpleController implements Controller {
     this.scan = new Scanner(rd);
   }
 
+  /**
+   * Creates a controller with the given arguments and creates a blank image of size 400x400
+   * pixels.
+   *
+   * @param ap Appendable to be used for output
+   * @param rd Readable to be used for input
+   * @throws IllegalArgumentException if arguments are null
+   */
   public SimpleController(Appendable ap, Readable rd) throws IllegalArgumentException {
     if (ap == null || rd == null) {
       throw new IllegalArgumentException("Cannot have null args.");
@@ -107,6 +116,9 @@ public class SimpleController implements Controller {
         break;
       case "current":
         image.moveToTop(stringToLayerNum(args[0]) - 1);
+        return;
+      case "remove":
+        image.removeLayer(stringToLayerNum(args[0]) - 1);
         return;
       case "load":
         if (args[0].equals("project") && args.length >= 2) {
