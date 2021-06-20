@@ -1,0 +1,38 @@
+Supported commands:
+new
+  -creates a new layer
+print
+  -prints the size of the image and current layers + their visibility
+current [layer number 1-indexed]
+  -makes the specified layer the top layer and visible
+invisible [layer number 1-indexed]
+  -makes the specified layer invisible
+load [path to image file]
+  -loads an image file into the current layer
+  -dimensions of the image file must match dimensions of project image unless there are no layers
+  -creates a new layer if no layers are present
+load project [path to project file]
+  -loads an entire project into the image processor
+  -file must end with .imgproc extension
+save [path]
+  -save the top-most visible layer to the specified file path
+  -if no image extension is given, jpg type is used by default
+save project [path]
+  -save the current project and all its layers
+  -no file extension is required, simply just supply the path with the name of the project
+create checkerboard
+  -creates a checkerboard layer at the current layer
+create [color] rectangle
+  -creats a rectangle the same size as the image
+  -colors can be one of: red, green, blue, white, black
+blur
+  -applies a blur filter to top-most visible layer
+sharpen
+  -applies a sharpening filter the top-most visible layer
+sepia
+  -applies a sepia color tranformation to top-most visible layer
+gray
+  -applies a grayscale color transformation to top-most visible layer
+quit
+  -quits the program
+  -any unsaved work will be lost

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SimpleImage implements Image {
+
   private final int width;
   private final int height;
   private final List<Layer> layers;
@@ -33,13 +34,32 @@ public class SimpleImage implements Image {
   }
 
   @Override
-  public void addLayer(Layer layer, int index) throws IllegalArgumentException {
-    if (layer == null || layer.getWidth() != this.width || layer.getHeight() != this.height
-        || (invalidIndex(index) && index != layers.size())) {
+  public void addLayer(Layer layer) throws IllegalArgumentException {
+    if (layer == null || layer.getWidth() != this.width || layer.getHeight() != this.height) {
       throw new IllegalArgumentException("Unable to add layer.");
     }
 
-    layers.add(index, layer);
+    layers.add(layer);
+  }
+
+  @Override
+  public void insertLayer(int index, Layer layer) throws IllegalArgumentException {
+    if (invalidIndex(index) || layer == null || layer.getHeight() != this.height
+        || layer.getWidth() != this.width) {
+      throw new IllegalArgumentException("Unable to insert layer.");
+    }
+
+    layers.set(index, layer);
+  }
+
+  @Override
+  public void moveToTop(int index) throws IllegalArgumentException {
+    if (invalidIndex(index)) {
+      throw new IllegalArgumentException("Invalid layer index.");
+    }
+    Layer layer = layers.remove(index);
+    layer.setVisible(true);
+    addLayer(layer);
   }
 
   @Override
@@ -61,9 +81,9 @@ public class SimpleImage implements Image {
   }
 
   @Override
-  public Layer getTopVisibleLayer() {
+  public Layer getTopVisibleLayer() throws IllegalArgumentException {
     if (layers.isEmpty()) {
-      return LayerCreator.createSolidRect(width, height, 0, 0, 0);
+      throw new IllegalArgumentException("no layers.");
     }
     for (int ii = layers.size() - 1; ii >= 0; ii--) {
       if (layers.get(ii).getVisible()) {
@@ -71,7 +91,7 @@ public class SimpleImage implements Image {
       }
     }
 
-    return LayerCreator.createSolidRect(width, height, 0, 0, 0);
+    throw new IllegalArgumentException("no visible layers.");
   }
 
   private boolean invalidIndex(int index) {

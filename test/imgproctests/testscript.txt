@@ -1,0 +1,13 @@
+new
+new
+print
+create checkerboard #test comment
+blur
+#another test comment
+sepia
+current 1
+create blue square
+gray
+sharpen
+save project /Users/keenanv/Documents/NEU/CS3500/Projects/imgproctests/scriptrun
+quit

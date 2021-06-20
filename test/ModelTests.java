@@ -345,12 +345,12 @@ public class ModelTests {
 
   @Test
   public void imageGetWidthTest() {
-    assertTrue(new SimpleImage(100, 200).getWidth() == 100);
+    assertEquals(100, new SimpleImage(100, 200).getWidth());
   }
 
   @Test
   public void imageGetHeightTest() {
-    assertTrue(new SimpleImage(100, 200).getHeight() == 200);
+    assertEquals(200, new SimpleImage(100, 200).getHeight());
   }
 
   @Test
@@ -358,7 +358,7 @@ public class ModelTests {
     setup(SupportedFileType.PPM);
 
     SimpleImage test = new SimpleImage(red.getWidth(), red.getHeight());
-    test.addLayer(red, 0);
+    test.addLayer(red);
 
     assertEquals(1, test.getNumLayers());
 
@@ -370,7 +370,7 @@ public class ModelTests {
     setup(SupportedFileType.PPM);
 
     SimpleImage test = new SimpleImage(10, 10);
-    test.addLayer(red, 0);
+    test.addLayer(red);
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -378,7 +378,7 @@ public class ModelTests {
     setup(SupportedFileType.PPM);
 
     SimpleImage test = new SimpleImage(red.getWidth(), red.getHeight());
-    test.addLayer(null, 0);
+    test.addLayer(null);
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -386,7 +386,7 @@ public class ModelTests {
     setup(SupportedFileType.PPM);
 
     SimpleImage test = new SimpleImage(red.getWidth(), red.getHeight());
-    test.addLayer(null, 1);
+    test.addLayer(null);
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -394,7 +394,7 @@ public class ModelTests {
     setup(SupportedFileType.PPM);
 
     SimpleImage test = new SimpleImage(red.getWidth(), red.getHeight());
-    test.addLayer(red, 0);
+    test.addLayer(red);
     test.getLayer(1);
   }
 
@@ -403,7 +403,7 @@ public class ModelTests {
     setup(SupportedFileType.PPM);
 
     SimpleImage test = new SimpleImage(red.getWidth(), red.getHeight());
-    test.addLayer(red, 0);
+    test.addLayer(red);
     test.removeLayer(1);
   }
 
@@ -412,7 +412,7 @@ public class ModelTests {
     setup(SupportedFileType.PPM);
 
     SimpleImage test = new SimpleImage(red.getWidth(), red.getHeight());
-    test.addLayer(red, 0);
+    test.addLayer(red);
     assertEquals(1, test.getNumLayers());
     assertTrue(equalLayers(red, test.removeLayer(0)));
     assertEquals(0, test.getNumLayers());
@@ -423,8 +423,8 @@ public class ModelTests {
     setup(SupportedFileType.PPM);
 
     SimpleImage test = new SimpleImage(red.getWidth(), red.getHeight());
-    test.addLayer(red, 0);
-    test.addLayer(green, 1);
+    test.addLayer(red);
+    test.addLayer(green);
     assertEquals(2, test.getNumLayers());
     assertTrue(equalLayers(red, test.removeLayer(0)));
     assertTrue(equalLayers(green, test.removeLayer(0)));

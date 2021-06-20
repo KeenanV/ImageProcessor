@@ -1,3 +1,7 @@
+import controller.Controller;
+import controller.SimpleController;
+import java.io.File;
+import java.io.InputStreamReader;
 import model.ColorTransformation;
 import model.ColorTransformation.ColorTransformationMatrix;
 import model.Filter;
@@ -18,12 +22,13 @@ public class Main {
    * @param args command line args
    */
   public static void main(String[] args) {
+    /*
     String path = "/Users/keenanv/Documents/NEU/CS3500/Projects/Image Processor/res/";
     Layer guitar = ImageUtil.readPPM(path + "guitar.ppm");
     Layer trees = ImageUtil.readPPM(path + "trees.ppm");
     Layer friday = ImageUtil.readFile(path + "friday.png");
     Image image = new SimpleImage(friday.getWidth(), friday.getHeight());
-    image.addLayer(friday, 0);
+    image.addLayer(friday);
 
     ImageUtil.writePPM(path + "friday.ppm", image.getLayer(0));
     ImageUtil.writeFile(path + "fridayNew.jpg", image.getLayer(0));
@@ -41,6 +46,13 @@ public class Main {
         new ColorTransformation(ColorTransformationMatrix.GRAYSCALE).start(trees));
     ImageUtil.writePPM(path + "treesSepia.ppm",
         new ColorTransformation(ColorTransformationMatrix.SEPIA).start(trees));
+
+     */
+    String script = "/Users/keenanv/Documents/NEU/CS3500/Projects/imgproctests/testscript.txt";
+    Controller controller = new SimpleController(new SimpleImage(400, 400), System.out,
+        ImageUtil.removeComments(script));
+
+    controller.runImageProcessor();
   }
 }
 

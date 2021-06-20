@@ -48,11 +48,11 @@ public class LayerCreator {
   /**
    * Creates a Layer that is a rectangle and every pixel is the same color.
    *
-   * @param width width in pixels
+   * @param width  width in pixels
    * @param height height in pixels
-   * @param red red channel value (0-255)
-   * @param green green channel value (0-255)
-   * @param blue blue channel value (0-255)
+   * @param red    red channel value (0-255)
+   * @param green  green channel value (0-255)
+   * @param blue   blue channel value (0-255)
    * @return resulting rectangle Layer
    */
   public static SimpleLayer createSolidRect(int width, int height, int red, int green, int blue) {
