@@ -3,6 +3,9 @@ package view;
 import java.io.IOException;
 import model.Image;
 
+/**
+ * Represents an interface through with the output of the program is shown to the user.
+ */
 public interface View {
 
   /**

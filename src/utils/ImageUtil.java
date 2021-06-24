@@ -83,7 +83,7 @@ public class ImageUtil {
 
     SimpleLayer layer = new SimpleLayer(width, height);
 
-    int _maxValue = sc.nextInt();
+    sc.nextInt();
 
     for (int yy = 0; yy < height; yy++) {
       for (int xx = 0; xx < width; xx++) {

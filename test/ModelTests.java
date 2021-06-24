@@ -125,26 +125,6 @@ public class ModelTests {
   }
 
   @Test
-  public void readMultiLayerImageTest() {
-    //TODO
-  }
-
-  @Test(expected = IllegalArgumentException.class)
-  public void readMultiLayerImageErrorTest() {
-    //TODO
-  }
-
-  @Test
-  public void writeMultiLayerImageTest() {
-    //TODO
-  }
-
-  @Test(expected = IllegalArgumentException.class)
-  public void writeMultiLayerImageErrorTest() {
-    //TODO
-  }
-
-  @Test
   public void createCheckerboardTest() {
     setup(SupportedFileType.PPM);
     SimpleLayer checkerTest = LayerCreator.createCheckerboard(10, 10);
@@ -278,7 +258,8 @@ public class ModelTests {
 
     assertFalse(TestingUtil.equalLayers(sepia, guitar));
     assertTrue(
-        TestingUtil.equalLayers(sepia, new ColorTransformation(ColorTransformationMatrix.SEPIA).start(guitar)));
+        TestingUtil.equalLayers(sepia,
+            new ColorTransformation(ColorTransformationMatrix.SEPIA).start(guitar)));
   }
 
   @Test(expected = IllegalArgumentException.class)

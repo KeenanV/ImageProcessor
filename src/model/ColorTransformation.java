@@ -1,7 +1,6 @@
 package model;
 
 import model.Pixel.PixelChannel;
-import utils.ImageUtil;
 
 /**
  * Applies the given matrix to the channels of each pixel in a given layer.

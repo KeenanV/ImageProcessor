@@ -143,6 +143,8 @@ public class SimpleController implements Controller {
           ImageUtil.writeFile(args[0], image.getTopVisibleLayer());
         }
         return;
+      default:
+        break;
     }
     throw new IllegalArgumentException("Unable to execute command.");
   }
@@ -224,5 +226,14 @@ public class SimpleController implements Controller {
     } catch (IOException e) {
       throw new IllegalStateException("Could not write to appendable");
     }
+  }
+
+  /**
+   * For testing purposes only.
+   *
+   * @return the current image being worked on
+   */
+  public Image getImage() {
+    return image;
   }
 }

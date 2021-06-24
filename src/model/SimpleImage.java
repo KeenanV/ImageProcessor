@@ -3,12 +3,21 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementation of an Image that has a list of layers and a width and a height.
+ */
 public class SimpleImage implements Image {
 
   private final int width;
   private final int height;
   private final List<Layer> layers;
 
+  /**
+   * Creates an image of the given dimensions.
+   *
+   * @param width  width of the image in pixels
+   * @param height height of the image in pixels
+   */
   public SimpleImage(int width, int height) {
     if (width <= 0 || height <= 0) {
       throw new IllegalArgumentException("Invalid image dimension");

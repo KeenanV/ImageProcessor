@@ -3,11 +3,20 @@ package view;
 import java.io.IOException;
 import model.Image;
 
+/**
+ * Implementation which outputs a text view to the user.
+ */
 public class SimpleTextView implements View {
 
   private final Appendable ap;
   private Image image;
 
+  /**
+   * Constructs a view with the given arguments.
+   *
+   * @param ap    Appendable to be used for output
+   * @param image Image to be used
+   */
   public SimpleTextView(Appendable ap, Image image) {
     this.ap = ap;
     this.image = image;

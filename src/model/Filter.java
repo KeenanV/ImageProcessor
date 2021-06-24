@@ -1,7 +1,6 @@
 package model;
 
 import model.Pixel.PixelChannel;
-import utils.ImageUtil;
 
 /**
  * Overlays this matrix centered on a pixel in the given layer, multiplies the matrix's value by a
