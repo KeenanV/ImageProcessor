@@ -6,7 +6,7 @@ import model.Image;
 /**
  * Represents an interface through with the output of the program is shown to the user.
  */
-public interface View {
+public interface TextView {
 
   /**
    * Renders a message to the given appendable. No newline character is added.

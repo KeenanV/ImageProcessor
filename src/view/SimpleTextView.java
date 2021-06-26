@@ -6,7 +6,7 @@ import model.Image;
 /**
  * Implementation which outputs a text view to the user.
  */
-public class SimpleTextView implements View {
+public class SimpleTextView implements TextView {
 
   private final Appendable ap;
   private Image image;

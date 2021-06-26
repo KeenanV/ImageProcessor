@@ -14,7 +14,7 @@ import model.SimpleImage;
 import model.SimpleLayer;
 import utils.ImageUtil;
 import view.SimpleTextView;
-import view.View;
+import view.TextView;
 
 /**
  * Represents a text-based implementation of a controller that a user uses to interact with the
@@ -23,7 +23,7 @@ import view.View;
 public class SimpleController implements Controller {
 
   private final Scanner scan;
-  private final View view;
+  private final TextView view;
   private Image image;
   private boolean quit = false;
 

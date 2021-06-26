@@ -5,15 +5,15 @@ import java.io.StringWriter;
 import model.SimpleImage;
 import org.junit.Test;
 import view.SimpleTextView;
-import view.View;
+import view.TextView;
 
 /**
  * Tests to be run on the view to ensure messages are rendered properly.
  */
-public class ViewTests {
+public class TextViewTests {
 
   private final StringWriter output = new StringWriter();
-  private View view = new SimpleTextView(output, new SimpleImage(100, 100));
+  private TextView view = new SimpleTextView(output, new SimpleImage(100, 100));
 
   @Test
   public void viewRenderMessageTest() throws IOException {
