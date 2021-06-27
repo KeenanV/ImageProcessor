@@ -2,6 +2,7 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
@@ -22,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import model.Image;
@@ -64,8 +66,12 @@ public class SimpleGUIView extends JFrame implements GUIView {
     mainPanel.add(new JScrollPane(imagePanel), BorderLayout.CENTER);
     imageDisplay = new JLabel();
     imageIcon = new ImageIcon(writeImage());
+    JScrollPane scroll = new JScrollPane(imageDisplay);
+    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+    scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
     imageDisplay.setIcon(imageIcon);
-    imagePanel.add(imageDisplay);
+    scroll.setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
+    imagePanel.add(scroll);
 
     // operations panel on the left
     JPanel operationsPanel = new JPanel();
@@ -142,7 +148,7 @@ public class SimpleGUIView extends JFrame implements GUIView {
   }
 
   private String writeImage() {
-    String path = "/Users/keenanv/Documents/NEU/CS3500/Projects/imgproctests/";
+    String path = "C:/Users/avery/IdeaProjects/ImageProcessor/";
     try {
       ImageUtil.writeFile(path + "temp.jpg", image.getTopVisibleLayer());
     } catch (IllegalArgumentException e) {
