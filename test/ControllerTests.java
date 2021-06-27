@@ -45,7 +45,7 @@ public class ControllerTests {
   @Test(expected = IllegalArgumentException.class)
   public void controllerConstructorNullArgTest() {
     setup();
-    controller = new SimpleController(null, null, null);
+    controller = new SimpleController(new SimpleImage(100, 100), System.out, null);
   }
 
   @Test

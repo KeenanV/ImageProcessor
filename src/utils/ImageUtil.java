@@ -239,7 +239,7 @@ public class ImageUtil {
     File file;
     FileWriter output;
     try {
-      file = new File(filename + ".imgproc");
+      file = new File(filename);
       file.createNewFile();
     } catch (IOException e) {
       throw new IllegalArgumentException("Unable to access file.");

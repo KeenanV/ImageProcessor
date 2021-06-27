@@ -1,19 +1,8 @@
 package view;
 
 import java.awt.Color;
-import java.awt.event.ActionListener;
-import javax.swing.event.ListSelectionListener;
-import model.Image;
-import model.LayerCommand;
 
-public interface GUIView {
-
-  /**
-   * Sets the current image displayed in the image panel.
-   *
-   * @param image image to be displayed
-   */
-  void setImage(Image image);
+public interface GUIView extends TextView {
 
   /**
    * Updates the GUI
@@ -41,5 +30,7 @@ public interface GUIView {
    * @param proj true if saving as a project file false if saving as image file
    */
   void saveFile(boolean proj);
+
+  String[] newImage();
 
 }
