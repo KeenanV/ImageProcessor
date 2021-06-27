@@ -1,7 +1,10 @@
 package view;
 
 import java.awt.Color;
+import java.awt.event.ActionListener;
+import javax.swing.event.ListSelectionListener;
 import model.Image;
+import model.LayerCommand;
 
 public interface GUIView {
 
@@ -23,13 +26,6 @@ public interface GUIView {
    * @return the chosen color
    */
   Color chooseColor();
-
-  /**
-   * Executes an image transformation operation.
-   *
-   * @param op the image transformation to be executed
-   */
-  void execOperation(int op);
 
   /**
    * Opens the file chooser dialogue and returns the path of the chosen file.
