@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionListener;
@@ -60,7 +61,7 @@ public class SimpleGUIView extends JFrame implements GUIView {
 
     // image panel in the center
     JPanel imagePanel = new JPanel();
-    mainPanel.add(imagePanel, BorderLayout.CENTER);
+    mainPanel.add(new JScrollPane(imagePanel), BorderLayout.CENTER);
     imageDisplay = new JLabel();
     imageIcon = new ImageIcon(writeImage());
     imageDisplay.setIcon(imageIcon);
