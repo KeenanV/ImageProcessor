@@ -32,6 +32,10 @@ image, a solid square of given color, or other simple images based on certain pa
 ImageUtil is a tool used to read image files from the computer's files, and to write a given Image
 into a file.
 
+The SimpleGUIView extends the TextView to add GUI functionality
+
+We separated all the commands out in the Controller to make it easier to build off of it. This way the GUI and the text version both call the same methods to execute commands.
+
 Images used:
 https://free-images.com/display/mountain_landscape_panorama_mountain.html
 https://free-images.com/display/guitar_guitar_pick_electric.html

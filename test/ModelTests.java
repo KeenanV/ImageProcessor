@@ -119,11 +119,6 @@ public class ModelTests {
     }
   }
 
-  @Test//(expected = IllegalArgumentException.class)//TODO fix
-  public void writePPMCannotWriteTest() {
-    ImageUtil.writePPM(path + "readonly.ppm", new SimpleLayer(10, 10));
-  }
-
   @Test
   public void createCheckerboardTest() {
     setup(SupportedFileType.PPM);

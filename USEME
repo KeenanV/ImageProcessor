@@ -38,3 +38,12 @@ gray
 quit
   -quits the program
   -any unsaved work will be lost
+
+GUI:
+The buttons on the top can be used to load/save the project as a multi-layer project or as a single image representing the top-most visible layer. It can also load an execute a script and create a new image with specified dimensions.
+
+The buttons on the left side are used to alter the top layer. The current color selected by the color chooser is what will be used to create a solid rectangle.
+
+The buttons on the right side modify the image by hiding/showing layers, adding/deleting layers.
+
+The image itself is a visual representation of the topmost visible layer and is scrollable.

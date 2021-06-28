@@ -3,34 +3,37 @@ package controller;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import javax.swing.JColorChooser;
+import java.io.StringWriter;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import model.ColorTransformation;
-import model.ColorTransformation.ColorTransformationMatrix;
-import model.Filter;
-import model.Filter.FilterMatrix;
 import model.Image;
-import model.Layer;
+import utils.ImageUtil;
 import view.GUIView;
 import view.SimpleGUIView;
+import view.SimpleGUIView.FileType;
 
+/**
+ * A Controller implementation for a GUI-based image processor that also acts as an ActionListener
+ * and ListSelectionListener.
+ */
 public class SimpleGUIController implements Controller, ActionListener, ListSelectionListener {
 
   private final GUIView view;
-  private final Controller delegate;
+  private Controller delegate;
   private Image image;
   private final JFrame frame;
   private int selectedLayer;
   private Color color = Color.WHITE;
 
+  /**
+   * Constructs a controller from the given image.
+   *
+   * @param image image to be used
+   */
   public SimpleGUIController(Image image) {
     this.image = image;
     this.view = new SimpleGUIView(this.image, this, this);
@@ -46,15 +49,8 @@ public class SimpleGUIController implements Controller, ActionListener, ListSele
     try {
       // Set cross-platform Java L&F (also called "Metal")
       UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-    } catch (UnsupportedLookAndFeelException e) {
-      // handle exception
-    } catch (ClassNotFoundException e) {
-      // handle exception
-    } catch (InstantiationException e) {
-      // handle exception
-    } catch (IllegalAccessException e) {
-      // handle exception
     } catch (Exception e) {
+      throw new IllegalArgumentException("Unable to set look and feel");
     }
   }
 
@@ -153,7 +149,7 @@ public class SimpleGUIController implements Controller, ActionListener, ListSele
           newCommand();
           break;
         case "Load Image":
-          filename = view.openFile(false);
+          filename = view.openFile(FileType.IMAGE);
           loadCommand(new String[]{filename});
           image = delegate.getImage();
           break;
@@ -161,7 +157,7 @@ public class SimpleGUIController implements Controller, ActionListener, ListSele
           view.saveFile(false);
           break;
         case "Load Project":
-          filename = view.openFile(true);
+          filename = view.openFile(FileType.PROJECT);
           loadCommand(new String[]{"project", filename});
           image = delegate.getImage();
           break;
@@ -191,6 +187,16 @@ public class SimpleGUIController implements Controller, ActionListener, ListSele
           newImageCommand(view.newImage());
           image = delegate.getImage();
           break;
+        case "Load Script":
+          filename = view.openFile(FileType.SCRIPT);
+          StringWriter output = new StringWriter();
+          delegate = new SimpleController(output, ImageUtil.removeComments(filename));
+          delegate.runImageProcessor();
+          image = delegate.getImage();
+          view.renderMessage("Successfully executed script.");
+          break;
+        default:
+          break;
       }
     } catch (Exception f) {
       writeMessage("An error occurred.");
@@ -207,7 +213,7 @@ public class SimpleGUIController implements Controller, ActionListener, ListSele
 
   private void writeMessage(String message) throws IllegalArgumentException {
     try {
-      view.renderMessage("Please create a layer first.");
+      view.renderMessage(message);
     } catch (IOException ioException) {
       throw new IllegalArgumentException("Unable to render message.");
     }

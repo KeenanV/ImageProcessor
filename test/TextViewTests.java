@@ -20,16 +20,4 @@ public class TextViewTests {
     view.renderMessage("test");
     assertEquals("test", output.toString());
   }
-
-  /*
-  @Test
-  public void viewPrintLayersTest() {
-
-  }
-
-  @Test
-  public void viewSetImageTest() {
-
-  }
-  */
 }

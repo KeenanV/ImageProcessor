@@ -16,7 +16,6 @@ import model.LayerCreator;
 import model.SimpleImage;
 import model.SimpleLayer;
 import utils.ImageUtil;
-import view.SimpleGUIView;
 import view.SimpleTextView;
 import view.TextView;
 
@@ -65,6 +64,12 @@ public class SimpleController implements Controller {
     this.scan = new Scanner(rd);
   }
 
+  /**
+   * Creates a new controller with a given image and view.
+   *
+   * @param image image to be used
+   * @param view view to be used
+   */
   public SimpleController(Image image, TextView view) {
     this.image = image;
     this.view = view;

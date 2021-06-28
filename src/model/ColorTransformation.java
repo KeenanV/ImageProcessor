@@ -82,15 +82,15 @@ public class ColorTransformation implements LayerCommand {
     int oldGreen = pixel.getChannel(PixelChannel.GREEN);
     int oldBlue = pixel.getChannel(PixelChannel.BLUE);
 
-    int newRed = (int) ((oldRed * matrix[0][0]) +
-        (oldGreen * matrix[0][1]) +
-        (oldBlue * matrix[0][2]));
-    int newGreen = (int) ((oldRed * matrix[1][0]) +
-        (oldGreen * matrix[1][1]) +
-        (oldBlue * matrix[1][2]));
-    int newBlue = (int) ((oldRed * matrix[2][0]) +
-        (oldGreen * matrix[2][1]) +
-        (oldBlue * matrix[2][2]));
+    int newRed = (int) ((oldRed * matrix[0][0])
+        + (oldGreen * matrix[0][1])
+        + (oldBlue * matrix[0][2]));
+    int newGreen = (int) ((oldRed * matrix[1][0])
+        + (oldGreen * matrix[1][1])
+        + (oldBlue * matrix[1][2]));
+    int newBlue = (int) ((oldRed * matrix[2][0])
+        + (oldGreen * matrix[2][1])
+        + (oldBlue * matrix[2][2]));
     return new SimplePixel(
         Math.max(0, Math.min(newRed, 255)),
         Math.max(0, Math.min(newGreen, 255)),

@@ -30,12 +30,22 @@ import model.Image;
 import model.LayerCreator;
 import utils.ImageUtil;
 
+/**
+ * Represents a GUI view for the user to interact with the image processor.
+ */
 public class SimpleGUIView extends JFrame implements GUIView {
+
+  /**
+   * Describes the three types of files that can be loaded into the image processor.
+   */
+  public enum FileType {
+    SCRIPT, IMAGE, PROJECT;
+  }
 
   private static final String[] IMAGE_OPS = new String[]
       {"Blur", "Sharpen", "Grayscale", "Sepia", "Create Checkerboard", "Create Rectangle"};
   private static final String[] FILE_OPS = new String[]
-      {"New Image", "Save Image", "Save Project", "Load Image", "Load Project"};
+      {"New Image", "Save Image", "Save Project", "Load Image", "Load Project", "Load Script"};
   private static final String[] LAYER_OPS = new String[]
       {"Add Layer", "Move to Top", "Hide/Show", "Delete Layer"};
   private Image image;
@@ -49,6 +59,13 @@ public class SimpleGUIView extends JFrame implements GUIView {
   private final JTextField height = new JTextField(5);
   private final JPanel newImagePanel;
 
+  /**
+   * Creates a view with the given listeners and image.
+   *
+   * @param image Image to be displayed
+   * @param controller ActionListener to be used as the controller
+   * @param selectionListener SelectionListener to be used
+   */
   public SimpleGUIView(Image image, ActionListener controller,
       ListSelectionListener selectionListener) {
     super();
@@ -148,7 +165,7 @@ public class SimpleGUIView extends JFrame implements GUIView {
   }
 
   private String writeImage() {
-    String path = "C:/Users/avery/IdeaProjects/ImageProcessor/";
+    String path = System.getProperty("user.dir") + "/";
     try {
       ImageUtil.writeFile(path + "temp.jpg", image.getTopVisibleLayer());
     } catch (IllegalArgumentException e) {
@@ -166,7 +183,8 @@ public class SimpleGUIView extends JFrame implements GUIView {
 
   @Override
   public void printLayers() throws IOException {
-
+    //unnecessary for the gui
+    return;
   }
 
   @Override
@@ -199,13 +217,15 @@ public class SimpleGUIView extends JFrame implements GUIView {
   }
 
   @Override
-  public String openFile(boolean proj) {
+  public String openFile(FileType type) {
     final JFileChooser fchooser = new JFileChooser(".");
     FileNameExtensionFilter filter;
-    if (proj) {
+    if (type == FileType.PROJECT) {
       filter = new FileNameExtensionFilter("Project File .imgproc", "imgproc");
-    } else {
+    } else if (type == FileType.IMAGE) {
       filter = new FileNameExtensionFilter("JPG,PNG,PPM", "jpg", "png", "ppm");
+    } else {
+      filter = new FileNameExtensionFilter("Script .imgscr", "imgscr");
     }
     fchooser.setFileFilter(filter);
     int retvalue = fchooser.showOpenDialog(SimpleGUIView.this);
